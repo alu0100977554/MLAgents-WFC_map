@@ -12,13 +12,13 @@ public class MoveToGoalAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        transform.position = Vector3.zero;
+        transform.localPosition = Vector3.zero;
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(transform.position);          // Adding Agent's position to Observation vector
-        sensor.AddObservation(_targetTransform.position);   // Adding Target's position to Observation vector
+        sensor.AddObservation(transform.localPosition);          // Adding Agent's position to Observation vector
+        sensor.AddObservation(_targetTransform.localPosition);   // Adding Target's position to Observation vector
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -27,17 +27,25 @@ public class MoveToGoalAgent : Agent
         float moveZ = actions.ContinuousActions[1];
 
         // Once the movement is calculated, It is added to the current position
-        transform.position += new Vector3(moveX, 0, moveZ) * Time.deltaTime * _moveSpeed;
+        transform.localPosition += new Vector3(moveX, 0, moveZ) * Time.deltaTime * _moveSpeed;
     }
 
-    public void OnTriggerEnter(Collider other)
+    // It uses player movement as heuristic mode for testing
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+        continuousActions[0] = Input.GetAxisRaw("Horizontal");
+        continuousActions[1] = Input.GetAxisRaw("Vertical");
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent<Target>(out Target target))
         {
             SetReward(1f);
             EndEpisode();
         }
-        else if (other.TryGetComponent<Boundary>(out Boundary boundary))
+        if (other.TryGetComponent<Boundary>(out Boundary boundary))
         {
             SetReward(-1f);
             EndEpisode();
