@@ -9,6 +9,12 @@ public class MoveToGoalAgent : Agent
 {
     [SerializeField] private Transform _targetTransform;
     [SerializeField] private float _moveSpeed = 1f;
+
+    public override void OnEpisodeBegin()
+    {
+        transform.position = Vector3.zero;
+    }
+
     public override void CollectObservations(VectorSensor sensor)
     {
         sensor.AddObservation(transform.position);          // Adding Agent's position to Observation vector
@@ -22,5 +28,19 @@ public class MoveToGoalAgent : Agent
 
         // Once the movement is calculated, It is added to the current position
         transform.position += new Vector3(moveX, 0, moveZ) * Time.deltaTime * _moveSpeed;
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<Target>(out Target target))
+        {
+            SetReward(1f);
+            EndEpisode();
+        }
+        else if (other.TryGetComponent<Boundary>(out Boundary boundary))
+        {
+            SetReward(-1f);
+            EndEpisode();
+        }
     }
 }
