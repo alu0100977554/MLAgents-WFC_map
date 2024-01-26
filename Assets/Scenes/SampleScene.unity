@@ -1172,6 +1172,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4435576064029413392, guid: 6e05e7e9ab640f144a6c77bfa95fcf5f, type: 3}
+      propertyPath: m_ImplicitCom
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6873821715790414149, guid: 6e05e7e9ab640f144a6c77bfa95fcf5f, type: 3}
       propertyPath: m_Name
       value: Training scenario

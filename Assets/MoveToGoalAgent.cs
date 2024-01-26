@@ -9,10 +9,28 @@ public class MoveToGoalAgent : Agent
 {
     [SerializeField] private Transform _targetTransform;
     [SerializeField] private float _moveSpeed = 1f;
+    private Vector3 _lastPosition;
+
+    private void Start()
+    {
+        _lastPosition = transform.position;
+    }
+
+    private void Update()
+    {
+        float currentDistanceToTarget = Mathf.Abs(Vector3.Distance(_targetTransform.position, transform.position));
+        float lastDistanceToTarget = Mathf.Abs(Vector3.Distance(_targetTransform.position, _lastPosition));
+        if (currentDistanceToTarget < lastDistanceToTarget)
+            AddReward(0.2f);
+        else
+            AddReward(-0.1f);
+        _lastPosition = transform.position;
+    }
 
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = Vector3.zero;
+        transform.localPosition = new Vector3(Random.Range(8f, -8f), 0f, Random.Range(6f, -6f));
+        _targetTransform.localPosition = new Vector3(Random.Range(8f, -8f), 0f, Random.Range(6f, -6f));
     }
 
     public override void CollectObservations(VectorSensor sensor)
