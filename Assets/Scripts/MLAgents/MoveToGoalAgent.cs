@@ -29,8 +29,8 @@ public class MoveToGoalAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = new Vector3(Random.Range(8f, -8f), 0f, Random.Range(6f, -6f));
-        _targetTransform.localPosition = new Vector3(Random.Range(8f, -8f), 0f, Random.Range(6f, -6f));
+        transform.localPosition = new Vector3(Random.Range(70f, 0f), 0f, Random.Range(-1f, -38f));
+        _targetTransform.localPosition = new Vector3(Random.Range(70f, 0f), 0f, Random.Range(-1f, -38f));
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -63,7 +63,7 @@ public class MoveToGoalAgent : Agent
             SetReward(1f);
             EndEpisode();
         }
-        if (other.TryGetComponent<Boundary>(out Boundary boundary))
+        if (other.TryGetComponent<Wall>(out Wall Wall))
         {
             SetReward(-1f);
             EndEpisode();
