@@ -21,16 +21,16 @@ public class MoveToGoalAgent : Agent
         float currentDistanceToTarget = Mathf.Abs(Vector3.Distance(_targetTransform.position, transform.position));
         float lastDistanceToTarget = Mathf.Abs(Vector3.Distance(_targetTransform.position, _lastPosition));
         if (currentDistanceToTarget < lastDistanceToTarget)
-            AddReward(0.2f);
-        else
-            AddReward(-0.1f);
+            AddReward((1 / currentDistanceToTarget));
+        // else
+        //    AddReward(-0.02f);
         _lastPosition = transform.position;
     }
 
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = new Vector3(Random.Range(70f, 0f), 0f, Random.Range(-1f, -38f));
-        _targetTransform.localPosition = new Vector3(Random.Range(70f, 0f), 0f, Random.Range(-1f, -38f));
+        transform.localPosition = new Vector3(Random.Range(70f, 0f), 1.5f, Random.Range(-1f, -38f));
+        _targetTransform.localPosition = new Vector3(Random.Range(70f, 0f), 1.5f, Random.Range(-1f, -38f));
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -60,12 +60,16 @@ public class MoveToGoalAgent : Agent
     {
         if (other.TryGetComponent<Target>(out Target target))
         {
-            SetReward(1f);
+            AddReward(1f);
             EndEpisode();
         }
         if (other.TryGetComponent<Wall>(out Wall Wall))
         {
-            SetReward(-1f);
+            AddReward(-0.75f);
+        }
+        if (other.TryGetComponent<Boundary>(out Boundary Boundary))
+        {
+            AddReward(-1f);
             EndEpisode();
         }
     }
