@@ -30,7 +30,7 @@ public class PredatorAgent : Agent
         float rotateY = actions.ContinuousActions[1];
 
         transform.localPosition += new Vector3(moveX, 0, moveZ) * Time.deltaTime * _moveSpeed;
-        transform.Rotate(0, rotateY, 0);
+        transform.Rotate(0, rotateY * _rotateSpeed, 0);
 
         AddReward(-0.01f);
     }
