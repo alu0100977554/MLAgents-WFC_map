@@ -10,11 +10,24 @@ public class PredatorAgent : Agent
     [SerializeField] private Transform _targetTransform;
     [SerializeField] private float _moveSpeed = 1f;
     [SerializeField] private float _rotateSpeed = 1f;
+    private Bounds _colliderBounds;
+
+    public void Start()
+    {
+
+        GameObject bounds = GameObject.FindWithTag("Floor");
+        _colliderBounds = bounds.GetComponent<Collider>().bounds;
+    }
 
     public override void OnEpisodeBegin()
     {
-        transform.localPosition = new Vector3(Random.Range(70f, 0f), 1.5f, Random.Range(-1f, -38f));
-        _targetTransform.localPosition = new Vector3(Random.Range(70f, 0f), 1.5f, Random.Range(-1f, -38f));
+        if (_colliderBounds != null)
+        {
+            transform.localPosition = new Vector3(Random.Range(_colliderBounds.max.x, _colliderBounds.min.x), 1.5f, Random.Range(_colliderBounds.max.z, _colliderBounds.min.z));
+            _targetTransform.localPosition = new Vector3(Random.Range(_colliderBounds.max.x, _colliderBounds.min.x), 1.5f, Random.Range(_colliderBounds.max.z, _colliderBounds.min.z));
+        }
+        else
+            Debug.Log("Bounds for spawning agent and target not found");
     }
 
     public override void CollectObservations(VectorSensor sensor)

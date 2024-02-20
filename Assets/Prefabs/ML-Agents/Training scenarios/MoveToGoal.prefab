@@ -704,7 +704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6978979939038237664}
   m_Layer: 0
-  m_Name: Training scenario (MoveToGoal)
+  m_Name: MoveToGoal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
