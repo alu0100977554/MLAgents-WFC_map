@@ -16,17 +16,6 @@ public class MoveToGoalAgent : Agent
         _lastPosition = transform.position;
     }
 
-    private void Update()
-    {
-        float currentDistanceToTarget = Mathf.Abs(Vector3.Distance(_targetTransform.position, transform.position));
-        float lastDistanceToTarget = Mathf.Abs(Vector3.Distance(_targetTransform.position, _lastPosition));
-        if (currentDistanceToTarget < lastDistanceToTarget)
-            AddReward((1 / currentDistanceToTarget));
-        // else
-        //    AddReward(-0.02f);
-        _lastPosition = transform.position;
-    }
-
     public override void OnEpisodeBegin()
     {
         transform.localPosition = new Vector3(Random.Range(70f, 0f), 1.5f, Random.Range(-1f, -38f));
@@ -46,6 +35,15 @@ public class MoveToGoalAgent : Agent
 
         // Once the movement is calculated, It is added to the current position
         transform.localPosition += new Vector3(moveX, 0, moveZ) * Time.deltaTime * _moveSpeed;
+
+        // float currentDistanceToTarget = Mathf.Abs(Vector3.Distance(_targetTransform.position, transform.position));
+        // float lastDistanceToTarget = Mathf.Abs(Vector3.Distance(_targetTransform.position, _lastPosition));
+        // if (currentDistanceToTarget < lastDistanceToTarget)
+        //     AddReward(0.01f);
+        // else
+        //    AddReward(-0.02f);
+        // _lastPosition = transform.position;
+        AddReward(-0.01f);
     }
 
     // It uses player movement as heuristic mode for testing
@@ -60,16 +58,16 @@ public class MoveToGoalAgent : Agent
     {
         if (other.TryGetComponent<Target>(out Target target))
         {
-            AddReward(1f);
+            AddReward(10f);
             EndEpisode();
         }
         if (other.TryGetComponent<Wall>(out Wall Wall))
         {
-            AddReward(-0.75f);
+            AddReward(-7.5f);
         }
         if (other.TryGetComponent<Boundary>(out Boundary Boundary))
         {
-            AddReward(-1f);
+            AddReward(-10f);
             EndEpisode();
         }
     }

@@ -1,0 +1,15 @@
+<set>
+  <tiles>
+<tile name="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Floor" symmetry="X" weight="1.0"/>
+<tile name="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Wall" symmetry="X" weight="1.0"/>
+	</tiles>
+<neighbors>  <neighbor left="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Floor 0" right="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Floor 0"/>
+  <neighbor left="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Floor 1" right="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Floor 1"/>
+  <neighbor left="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Floor 1" right="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Wall 1"/>
+  <neighbor left="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Floor 0" right="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Wall 0"/>
+  <neighbor left="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Wall 0" right="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Wall 0"/>
+  <neighbor left="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Wall 1" right="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Wall 1"/>
+  <neighbor left="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Wall 0" right="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Floor 0"/>
+  <neighbor left="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Wall 1" right="Assets/Prefabs/WFC/Tilesets/Simple_labyrinth/Floor 1"/>
+	</neighbors>
+</set>
