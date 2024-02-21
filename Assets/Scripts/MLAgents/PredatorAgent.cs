@@ -68,18 +68,18 @@ public class PredatorAgent : Agent
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Target>(out Target target))
+        if (other.gameObject.tag == "Target")
         {
             AddReward(10f);
             // Material successFloorMaterial = Resources.Load("FloorMaterial_success", typeof(Material)) as Material;
             // _floor.GetComponent<Renderer>().material = successFloorMaterial;
             EndEpisode();
         }
-        if (other.TryGetComponent<Wall>(out Wall Wall))
+        if (other.gameObject.tag == "Wall")
         {
             AddReward(-7.5f);
         }
-        if (other.TryGetComponent<Boundary>(out Boundary Boundary))
+        if (other.gameObject.tag == "Boundary")
         {
             AddReward(-10f);
             // Material failFloorMaterial = Resources.Load("FloorMaterial_fail", typeof(Material)) as Material;
