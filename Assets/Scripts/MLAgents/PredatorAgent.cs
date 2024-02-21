@@ -26,12 +26,12 @@ public class PredatorAgent : Agent
 
         if (_colliderBounds != null)
         {
-            _targetTransform.localPosition = new Vector3(Random.Range(6f, -6f), 1.5f, Random.Range(8f, -9));
+            _targetTransform.localPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9));
 
             Vector3 tempPosition;
             do
             {
-                tempPosition = new Vector3(Random.Range(6f, -6f), 1.5f, Random.Range(8f, -9));
+                tempPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9));
             } while (Physics.CheckBox(tempPosition, new Vector3(2f, 0.1f, 2f)));
             transform.localPosition = tempPosition;
         }
