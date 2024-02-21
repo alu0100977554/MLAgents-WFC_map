@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 8342870732754916510}
   m_Layer: 0
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -762,14 +762,72 @@ PrefabInstance:
       value: PredatorAgent
       objectReference: {fileID: 0}
     - target: {fileID: 9105299116697214535, guid: df74a8c2876983649a685011cd764acf, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 5022602860645237092, guid: 3647ca863fab90140b7adab18a503469, type: 3}
+    - target: {fileID: 9105299116697214535, guid: df74a8c2876983649a685011cd764acf, type: 3}
       propertyPath: m_BrainParameters.VectorObservationSize
       value: 7
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9105299116697214535, guid: df74a8c2876983649a685011cd764acf, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[0]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9105299116697214535, guid: df74a8c2876983649a685011cd764acf, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.m_NumContinuousActions
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2798381342375375528, guid: df74a8c2876983649a685011cd764acf, type: 3}
+    - {fileID: 6917858526688759191, guid: df74a8c2876983649a685011cd764acf, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4175182755950564141, guid: df74a8c2876983649a685011cd764acf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4074332364628248888}
+    - targetCorrespondingSourceObject: {fileID: 4175182755950564141, guid: df74a8c2876983649a685011cd764acf, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1798360107351786704}
   m_SourcePrefab: {fileID: 100100000, guid: df74a8c2876983649a685011cd764acf, type: 3}
+--- !u!1 &4855013505909069177 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4175182755950564141, guid: df74a8c2876983649a685011cd764acf, type: 3}
+  m_PrefabInstance: {fileID: 8831914664224491092}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4074332364628248888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4855013505909069177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 5
+  TakeActionsBetweenDecisions: 1
+--- !u!114 &1798360107351786704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4855013505909069177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 438192c2d2a76154a90a26ff29e8ef98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 5000
+  _targetTransform: {fileID: 1310600043176431491}
+  _moveSpeed: 8
+  _rotateSpeed: 2
 --- !u!4 &6004160689139116554 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3009059594483428446, guid: df74a8c2876983649a685011cd764acf, type: 3}

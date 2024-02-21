@@ -10,21 +10,30 @@ public class PredatorAgent : Agent
     [SerializeField] private Transform _targetTransform;
     [SerializeField] private float _moveSpeed = 1f;
     [SerializeField] private float _rotateSpeed = 1f;
+    private GameObject _floor;
     private Bounds _colliderBounds;
 
     public void Start()
     {
-
-        GameObject bounds = GameObject.FindWithTag("Floor");
-        _colliderBounds = bounds.GetComponent<Collider>().bounds;
+        _floor = GameObject.FindWithTag("Floor");
+        _colliderBounds = _floor.GetComponent<Collider>().bounds;
     }
 
     public override void OnEpisodeBegin()
     {
+        // Material defaultFloortMaterial = Resources.Load("FloorMaterial", typeof(Material)) as Material;
+        // _floor.GetComponent<Renderer>().material = defaultFloortMaterial;
+
         if (_colliderBounds != null)
         {
-            transform.localPosition = new Vector3(Random.Range(_colliderBounds.max.x, _colliderBounds.min.x), 1.5f, Random.Range(_colliderBounds.max.z, _colliderBounds.min.z));
-            _targetTransform.localPosition = new Vector3(Random.Range(_colliderBounds.max.x, _colliderBounds.min.x), 1.5f, Random.Range(_colliderBounds.max.z, _colliderBounds.min.z));
+            _targetTransform.localPosition = new Vector3(Random.Range(6f, -6f), 1.5f, Random.Range(8f, -9));
+
+            Vector3 tempPosition;
+            do
+            {
+                tempPosition = new Vector3(Random.Range(6f, -6f), 1.5f, Random.Range(8f, -9));
+            } while (Physics.CheckBox(tempPosition, new Vector3(2f, 0.1f, 2f)));
+            transform.localPosition = tempPosition;
         }
         else
             Debug.Log("Bounds for spawning agent and target not found");
@@ -34,13 +43,14 @@ public class PredatorAgent : Agent
     {
         sensor.AddObservation(transform.localPosition);          // Adding Agent's position to Observation vector
         sensor.AddObservation(_targetTransform.localPosition);   // Adding Target's position to Observation vector
+        sensor.AddObservation(_targetTransform.localRotation.y);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
         float moveZ = actions.ContinuousActions[1];
-        float rotateY = actions.ContinuousActions[1];
+        float rotateY = actions.ContinuousActions[2];
 
         transform.localPosition += new Vector3(moveX, 0, moveZ) * Time.deltaTime * _moveSpeed;
         transform.Rotate(0, rotateY * _rotateSpeed, 0);
@@ -61,6 +71,8 @@ public class PredatorAgent : Agent
         if (other.TryGetComponent<Target>(out Target target))
         {
             AddReward(10f);
+            // Material successFloorMaterial = Resources.Load("FloorMaterial_success", typeof(Material)) as Material;
+            // _floor.GetComponent<Renderer>().material = successFloorMaterial;
             EndEpisode();
         }
         if (other.TryGetComponent<Wall>(out Wall Wall))
@@ -70,6 +82,8 @@ public class PredatorAgent : Agent
         if (other.TryGetComponent<Boundary>(out Boundary Boundary))
         {
             AddReward(-10f);
+            // Material failFloorMaterial = Resources.Load("FloorMaterial_fail", typeof(Material)) as Material;
+            // _floor.GetComponent<Renderer>().material = failFloorMaterial;
             EndEpisode();
         }
     }
