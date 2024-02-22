@@ -26,14 +26,21 @@ public class PredatorAgent : Agent
 
         if (_colliderBounds != null)
         {
-            _targetTransform.localPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9));
-
-            Vector3 tempPosition;
+            /*Vector3 tempTargetPosition;
             do
             {
-                tempPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9));
-            } while (Physics.CheckBox(tempPosition, new Vector3(2f, 0.1f, 2f)));
-            transform.localPosition = tempPosition;
+                // tempTargetPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9f));
+                tempTargetPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
+            } while (Physics.CheckBox(tempTargetPosition, new Vector3(2f, 0.1f, 2f)));
+            _targetTransform.localPosition = tempTargetPosition;*/
+            _targetTransform.localPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
+
+            Vector3 tempAgentPosition;
+            do
+            {
+                tempAgentPosition = new Vector3(Random.Range(12f, 40f), 1.3f, Random.Range(-30f, -9f));
+            } while (Physics.CheckBox(tempAgentPosition, new Vector3(2f, 0.1f, 2f)));
+            transform.localPosition = tempAgentPosition;
         }
         else
             Debug.Log("Bounds for spawning agent and target not found");
