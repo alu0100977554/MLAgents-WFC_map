@@ -9,15 +9,42 @@
                 "auxillary_file_paths": [
                     "results\\pred_obst_labyrinth\\Predator\\Predator-489832.pt"
                 ]
+            },
+            {
+                "steps": 499996,
+                "file_path": "results\\pred_obst_labyrinth\\Predator\\Predator-499996.onnx",
+                "reward": null,
+                "creation_time": 1709038986.5617223,
+                "auxillary_file_paths": [
+                    "results\\pred_obst_labyrinth\\Predator\\Predator-499996.pt"
+                ]
+            },
+            {
+                "steps": 500021,
+                "file_path": "results\\pred_obst_labyrinth\\Predator\\Predator-500021.onnx",
+                "reward": 8.789999961853027,
+                "creation_time": 1709038986.5907223,
+                "auxillary_file_paths": [
+                    "results\\pred_obst_labyrinth\\Predator\\Predator-500021.pt"
+                ]
+            },
+            {
+                "steps": 500021,
+                "file_path": "results\\pred_obst_labyrinth\\Predator\\Predator-500021.onnx",
+                "reward": null,
+                "creation_time": 1709039016.3100758,
+                "auxillary_file_paths": [
+                    "results\\pred_obst_labyrinth\\Predator\\Predator-500021.pt"
+                ]
             }
         ],
         "final_checkpoint": {
-            "steps": 489832,
+            "steps": 500021,
             "file_path": "results\\pred_obst_labyrinth\\Predator.onnx",
-            "reward": 8.787500143051147,
-            "creation_time": 1708570105.1707473,
+            "reward": null,
+            "creation_time": 1709039016.3100758,
             "auxillary_file_paths": [
-                "results\\pred_obst_labyrinth\\Predator\\Predator-489832.pt"
+                "results\\pred_obst_labyrinth\\Predator\\Predator-500021.pt"
             ]
         }
     },

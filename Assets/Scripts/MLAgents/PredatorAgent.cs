@@ -26,19 +26,19 @@ public class PredatorAgent : Agent
 
         if (_colliderBounds != null)
         {
-            /*Vector3 tempTargetPosition;
+            Vector3 tempTargetPosition;
             do
             {
-                // tempTargetPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9f));
-                tempTargetPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
+                tempTargetPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9f));
+                // tempTargetPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
             } while (Physics.CheckBox(tempTargetPosition, new Vector3(2f, 0.1f, 2f)));
-            _targetTransform.localPosition = tempTargetPosition;*/
-            _targetTransform.localPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
+            _targetTransform.localPosition = tempTargetPosition;
 
             Vector3 tempAgentPosition;
             do
             {
-                tempAgentPosition = new Vector3(Random.Range(12f, 40f), 1.3f, Random.Range(-30f, -9f));
+                tempAgentPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9f));
+                // tempAgentPosition = new Vector3(Random.Range(12f, 40f), 1.3f, Random.Range(-30f, -9f));
             } while (Physics.CheckBox(tempAgentPosition, new Vector3(2f, 0.1f, 2f)));
             transform.localPosition = tempAgentPosition;
         }
@@ -82,16 +82,23 @@ public class PredatorAgent : Agent
             // _floor.GetComponent<Renderer>().material = successFloorMaterial;
             EndEpisode();
         }
-        if (other.gameObject.tag == "Wall")
-        {
-            AddReward(-7.5f);
-        }
+
         if (other.gameObject.tag == "Boundary")
         {
             AddReward(-10f);
             // Material failFloorMaterial = Resources.Load("FloorMaterial_fail", typeof(Material)) as Material;
             // _floor.GetComponent<Renderer>().material = failFloorMaterial;
             EndEpisode();
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Wall")
+        {
+            Debug.Log("Collision on wall");
+            AddReward(-10f);
+            //EndEpisode();
         }
     }
 }
