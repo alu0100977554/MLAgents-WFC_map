@@ -12,6 +12,9 @@ public class PredatorAgent : Agent
     [SerializeField] private float _rotateSpeed = 1f;
     private GameObject _floor;
     private Bounds _colliderBounds;
+    private int _nWallCollisions = 0;
+    private float _collisionTime = 0.0f;
+    private float _maxCollisionTime = 5.0f;
 
     public void Start()
     {
@@ -50,7 +53,7 @@ public class PredatorAgent : Agent
     {
         sensor.AddObservation(transform.localPosition);          // Adding Agent's position to Observation vector
         sensor.AddObservation(_targetTransform.localPosition);   // Adding Target's position to Observation vector
-        sensor.AddObservation(_targetTransform.localRotation.y);
+        sensor.AddObservation(transform.localRotation.y);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -96,9 +99,29 @@ public class PredatorAgent : Agent
     {
         if (other.gameObject.tag == "Wall")
         {
-            Debug.Log("Collision on wall");
+            //Debug.Log("Collision on wall");
+            AddReward(-2f);
+
+            if (_nWallCollisions >= 10)
+            {
+                _nWallCollisions = 0;
+                //Debug.Log("Deberia reiniciarse");
+                AddReward(-10f);
+                EndEpisode();
+            }
+            else
+                _nWallCollisions++;
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        _collisionTime += Time.deltaTime;
+        if (_collisionTime >= _maxCollisionTime)
+        {
+            _collisionTime = 0.0f;
             AddReward(-10f);
-            //EndEpisode();
+            EndEpisode();
         }
     }
 }
