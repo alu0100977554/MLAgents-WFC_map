@@ -24,24 +24,21 @@ public class PredatorAgent : Agent
 
     public override void OnEpisodeBegin()
     {
-        // Material defaultFloortMaterial = Resources.Load("FloorMaterial", typeof(Material)) as Material;
-        // _floor.GetComponent<Renderer>().material = defaultFloortMaterial;
-
         if (_colliderBounds != null)
         {
             Vector3 tempTargetPosition;
             do
             {
-                tempTargetPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9f));
-                // tempTargetPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
+                // tempTargetPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9f));
+                tempTargetPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
             } while (Physics.CheckBox(tempTargetPosition, new Vector3(2f, 0.1f, 2f)));
             _targetTransform.localPosition = tempTargetPosition;
 
             Vector3 tempAgentPosition;
             do
             {
-                tempAgentPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9f));
-                // tempAgentPosition = new Vector3(Random.Range(12f, 40f), 1.3f, Random.Range(-30f, -9f));
+                // tempAgentPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9f));
+                tempAgentPosition = new Vector3(Random.Range(12f, 40f), 1.3f, Random.Range(-30f, -9f));
             } while (Physics.CheckBox(tempAgentPosition, new Vector3(2f, 0.1f, 2f)));
             transform.localPosition = tempAgentPosition;
         }
@@ -81,16 +78,12 @@ public class PredatorAgent : Agent
         if (other.gameObject.tag == "Target")
         {
             AddReward(10f);
-            // Material successFloorMaterial = Resources.Load("FloorMaterial_success", typeof(Material)) as Material;
-            // _floor.GetComponent<Renderer>().material = successFloorMaterial;
             EndEpisode();
         }
 
         if (other.gameObject.tag == "Boundary")
         {
             AddReward(-10f);
-            // Material failFloorMaterial = Resources.Load("FloorMaterial_fail", typeof(Material)) as Material;
-            // _floor.GetComponent<Renderer>().material = failFloorMaterial;
             EndEpisode();
         }
     }
@@ -99,13 +92,13 @@ public class PredatorAgent : Agent
     {
         if (other.gameObject.tag == "Wall")
         {
-            //Debug.Log("Collision on wall");
-            AddReward(-2f);
+            Debug.Log("Collision on wall");
+            AddReward(-5f);
 
             if (_nWallCollisions >= 10)
             {
                 _nWallCollisions = 0;
-                //Debug.Log("Deberia reiniciarse");
+                Debug.Log("Deberia reiniciarse");
                 AddReward(-10f);
                 EndEpisode();
             }
