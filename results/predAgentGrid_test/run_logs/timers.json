@@ -1,0 +1,73 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1709799748",
+        "python_version": "3.10.12 | packaged by Anaconda, Inc. | (main, Jul  5 2023, 19:01:18) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\Pablo\\miniconda3\\envs\\mlagents\\Scripts\\mlagents-learn config/predatorAgent.yaml --run-id=predAgentGrid_test --force",
+        "mlagents_version": "1.0.0",
+        "mlagents_envs_version": "1.0.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.2.1+cu121",
+        "numpy_version": "1.23.5",
+        "end_time_seconds": "1709799984"
+    },
+    "total": 235.66979619997437,
+    "count": 1,
+    "self": 0.0049974999856203794,
+    "children": {
+        "run_training.setup": {
+            "total": 0.07498619999387302,
+            "count": 1,
+            "self": 0.07498619999387302
+        },
+        "TrainerController.start_learning": {
+            "total": 235.58981249999488,
+            "count": 1,
+            "self": 0.0003313000197522342,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 16.72178999998141,
+                    "count": 1,
+                    "self": 16.72178999998141
+                },
+                "TrainerController.advance": {
+                    "total": 218.09281219998957,
+                    "count": 1,
+                    "self": 3.399999695830047e-05,
+                    "children": {
+                        "env_step": {
+                            "total": 218.0927781999926,
+                            "count": 1,
+                            "self": 218.09277349998592,
+                            "children": {
+                                "SubprocessEnvManager._take_step": {
+                                    "total": 4.7000066842883825e-06,
+                                    "count": 1,
+                                    "self": 4.7000066842883825e-06
+                                }
+                            }
+                        }
+                    }
+                },
+                "trainer_threads": {
+                    "total": 9.999785106629133e-07,
+                    "count": 1,
+                    "self": 9.999785106629133e-07
+                },
+                "TrainerController._save_models": {
+                    "total": 0.7748780000256374,
+                    "count": 1,
+                    "self": 0.010391400021035224,
+                    "children": {
+                        "RLTrainer._checkpoint": {
+                            "total": 0.7644866000046022,
+                            "count": 1,
+                            "self": 0.7644866000046022
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

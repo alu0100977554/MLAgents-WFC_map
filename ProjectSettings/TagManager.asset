@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Boundary
   - Floor
+  - PredatorAgent
   layers:
   - Default
   - TransparentFX
