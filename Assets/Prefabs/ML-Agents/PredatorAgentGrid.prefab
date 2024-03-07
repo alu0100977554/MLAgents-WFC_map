@@ -78,9 +78,9 @@ MonoBehaviour:
     VectorObservationSize: 7
     NumStackedVectorObservations: 1
     m_ActionSpec:
-      m_NumContinuousActions: 2
+      m_NumContinuousActions: 3
       BranchSizes: 
-    VectorActionSize: 02000000
+    VectorActionSize: 03000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
@@ -202,9 +202,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SensorName: GridSensor
-  m_CellScale: {x: 1, y: 0.01, z: 1}
+  m_CellScale: {x: 0.75, y: 0.1, z: 0.75}
   m_GridSize: {x: 20, y: 1, z: 20}
-  m_RotateWithAgent: 1
+  m_RotateWithAgent: 0
   m_AgentGameObject: {fileID: 6493858192870339029}
   m_DetectableTags:
   - Target
@@ -212,7 +212,7 @@ MonoBehaviour:
   - Boundary
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   m_MaxColliderBufferSize: 500
   m_InitialColliderBufferSize: 4
   m_DebugColors:

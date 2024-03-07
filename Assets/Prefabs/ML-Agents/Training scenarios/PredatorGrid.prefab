@@ -878,7 +878,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8794894806235578338}
-  - {fileID: 928732659732451942}
+  - {fileID: 484547881623222238}
   - {fileID: 7240071339710526607}
   - {fileID: 181245607257071973}
   - {fileID: 1560175274362813044}
@@ -1120,7 +1120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9373393535dd6e439a98a8a83ad574d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &3726908331553823400
+--- !u!1001 &4170988239450832656
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1130,15 +1130,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4565284494715488462, guid: 04be464330a9bb345a326ddeb97e5f75, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.97
+      value: 1.1477633
       objectReference: {fileID: 0}
     - target: {fileID: 4565284494715488462, guid: 04be464330a9bb345a326ddeb97e5f75, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.16
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4565284494715488462, guid: 04be464330a9bb345a326ddeb97e5f75, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.08
+      value: -4.6768084
       objectReference: {fileID: 0}
     - target: {fileID: 4565284494715488462, guid: 04be464330a9bb345a326ddeb97e5f75, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1177,10 +1177,10 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04be464330a9bb345a326ddeb97e5f75, type: 3}
---- !u!4 &928732659732451942 stripped
+--- !u!4 &484547881623222238 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4565284494715488462, guid: 04be464330a9bb345a326ddeb97e5f75, type: 3}
-  m_PrefabInstance: {fileID: 3726908331553823400}
+  m_PrefabInstance: {fileID: 4170988239450832656}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4607372494304491528
 PrefabInstance:
@@ -1230,6 +1230,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5871217141426734451, guid: 5aaf4e2c18453d34bb6eebc40c2783ec, type: 3}
+      propertyPath: _targetTransform
+      value: 
+      objectReference: {fileID: 484547881623222238}
     - target: {fileID: 6493858192870339029, guid: 5aaf4e2c18453d34bb6eebc40c2783ec, type: 3}
       propertyPath: m_Name
       value: PredatorAgentGrid
