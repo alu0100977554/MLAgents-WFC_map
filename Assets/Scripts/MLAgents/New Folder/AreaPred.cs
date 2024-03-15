@@ -27,6 +27,16 @@ public class AreaPred : MonoBehaviour
             Debug.Log("ERROR: Floor not found!");
     }
 
+    public GameObject GetAgent()
+    {
+        return _agent;
+    }
+
+    public GameObject GetTarget()
+    {
+        return _target;
+    }
+
     public void ResetArea()
     {
         ResetAgent();
