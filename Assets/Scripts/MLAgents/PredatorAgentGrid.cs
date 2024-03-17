@@ -7,10 +7,10 @@ using Unity.MLAgents.Sensors;
 
 public class PredatorAgentGrid : Agent
 {
-    [SerializeField] private AreaPred _parentArea;
-    [SerializeField] private GameObject _target;
+    private AreaPred _parentArea;
+    private GameObject _target;
 
-    [SerializeField] private float _moveSpeed = 1f;
+    private float _moveSpeed = 0.5f;
     [SerializeField] private float _rotateSpeed = 1f;
 
     private int _nWallCollisions = 0;
@@ -33,17 +33,35 @@ public class PredatorAgentGrid : Agent
     {
         sensor.AddObservation(transform.localPosition);          // Adding Agent's position to Observation vector
         sensor.AddObservation(_target.transform.localPosition);   // Adding Target's position to Observation vector
-        sensor.AddObservation(transform.localRotation.y);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        float moveX = actions.ContinuousActions[0];
-        float moveZ = actions.ContinuousActions[1];
-        float rotateY = actions.ContinuousActions[2];
+        int movement = actions.DiscreteActions[0];
+        int moveX = 0;
+        int moveZ = 0;
+        switch(movement)
+        {
+            case 1:
+                moveX = 1;
+                break;
+            case 2:
+                moveX = -1;
+                break;
+            case 3:
+                moveZ = 1;
+                break;
+            case 4:
+                moveZ = -1;
+                break;
+            default:
+                moveX = 0;
+                moveZ = 0;
+                break;
+        }
 
-        transform.localPosition += new Vector3(moveX, 0, moveZ) * Time.deltaTime * _moveSpeed;
-        transform.Rotate(0, rotateY * _rotateSpeed, 0);
+        transform.localPosition += new Vector3(moveX, 0, moveZ) * _moveSpeed;
+        // transform.Rotate(0, rotateY * _rotateSpeed, 0);
 
         AddReward(-0.01f);
     }
@@ -51,9 +69,29 @@ public class PredatorAgentGrid : Agent
     // It uses player movement as heuristic mode for testing
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
-        continuousActions[0] = Input.GetAxisRaw("Horizontal");
-        continuousActions[1] = Input.GetAxisRaw("Vertical");
+        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+        discreteActions[0] = 0;
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            discreteActions[0] = 1;
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            discreteActions[0] = 2;
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            discreteActions[0] = 3;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            discreteActions[0] = 4;
+        }
+        else
+        {
+            discreteActions[0] = 0;
+        }
     }
 
     private void OnTriggerEnter(Collider other)

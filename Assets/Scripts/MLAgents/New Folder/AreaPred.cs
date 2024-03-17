@@ -56,7 +56,6 @@ public class AreaPred : MonoBehaviour
             // tempAgentPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
         } while (Physics.CheckBox(tempAgentPosition, new Vector3(2f, 0.1f, 2f)));
         _agent.transform.position = tempAgentPosition;
-        Debug.Log("Agent:" + tempAgentPosition);
     }
 
     private void ResetTarget()
@@ -69,6 +68,5 @@ public class AreaPred : MonoBehaviour
             // tempTargetPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
         } while (Physics.CheckBox(tempTargetPosition, new Vector3(2f, 0.1f, 2f)));
         _target.transform.position = tempTargetPosition;
-        Debug.Log("Target: " + tempTargetPosition);
     }
 }
