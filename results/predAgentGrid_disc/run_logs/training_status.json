@@ -1,0 +1,29 @@
+{
+    "Predator": {
+        "checkpoints": [
+            {
+                "steps": 454313,
+                "file_path": "results\\predAgentGrid_disc\\Predator\\Predator-454313.onnx",
+                "reward": 9.65999984741211,
+                "creation_time": 1710697532.6044014,
+                "auxillary_file_paths": [
+                    "results\\predAgentGrid_disc\\Predator\\Predator-454313.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 454313,
+            "file_path": "results\\predAgentGrid_disc\\Predator.onnx",
+            "reward": 9.65999984741211,
+            "creation_time": 1710697532.6044014,
+            "auxillary_file_paths": [
+                "results\\predAgentGrid_disc\\Predator\\Predator-454313.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "2.2.1+cu121"
+    }
+}

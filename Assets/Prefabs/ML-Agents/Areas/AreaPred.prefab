@@ -1244,6 +1244,22 @@ PrefabInstance:
       propertyPath: m_BrainParameters.VectorObservationSize
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 8449094372982121796, guid: 5aaf4e2c18453d34bb6eebc40c2783ec, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8449094372982121796, guid: 5aaf4e2c18453d34bb6eebc40c2783ec, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.data[0]
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8449094372982121796, guid: 5aaf4e2c18453d34bb6eebc40c2783ec, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8449094372982121796, guid: 5aaf4e2c18453d34bb6eebc40c2783ec, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.data[0]
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
