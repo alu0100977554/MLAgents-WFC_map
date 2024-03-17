@@ -7,8 +7,8 @@ using Unity.MLAgents.Sensors;
 
 public class PredatorAgentGrid : Agent
 {
-    private AreaPred _parentArea;
-    private GameObject _target;
+    [SerializeField] private AreaPred _parentArea;
+    [SerializeField] private GameObject _target;
 
     [SerializeField] private float _moveSpeed = 1f;
     [SerializeField] private float _rotateSpeed = 1f;
