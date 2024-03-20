@@ -13,9 +13,11 @@ public class PredatorAgentGrid : Agent
     private float _moveSpeed = 0.5f;
     [SerializeField] private float _rotateSpeed = 1f;
 
+    private float _logFuncConstant = 1.25f;
+
     private int _nWallCollisions = 0;
     private float _collisionTime = 0.0f;
-    private float _maxCollisionTime = 5.0f;
+    private float _maxCollisionTime = 5f;
 
     public override void Initialize()
     {
@@ -44,14 +46,18 @@ public class PredatorAgentGrid : Agent
         {
             case 1:
                 moveX = 1;
+                moveZ = 0;
                 break;
             case 2:
                 moveX = -1;
+                moveZ = 0;
                 break;
             case 3:
+                moveX = 0;
                 moveZ = 1;
                 break;
             case 4:
+                moveX = 0;
                 moveZ = -1;
                 break;
             default:
@@ -62,8 +68,12 @@ public class PredatorAgentGrid : Agent
 
         transform.localPosition += new Vector3(moveX, 0, moveZ) * _moveSpeed;
         // transform.Rotate(0, rotateY * _rotateSpeed, 0);
+        float distanceToTarget = Vector3.Distance(_target.transform.localPosition, transform.localPosition);
 
+        //AddReward((-Mathf.Log10(distanceToTarget / _logFuncConstant) + _logFuncConstant) * 0.05f);
         AddReward(-0.01f);
+        //if (distanceToTarget < 2.0f)
+            //AddReward(0.01f);
     }
 
     // It uses player movement as heuristic mode for testing
@@ -98,13 +108,13 @@ public class PredatorAgentGrid : Agent
     {
         if (other.gameObject.tag == "Target")
         {
-            AddReward(10f);
+            SetReward(10f);
             EndEpisode();
         }
 
         if (other.gameObject.tag == "Boundary")
         {
-            AddReward(-10f);
+            SetReward(-10f);
             EndEpisode();
         }
     }
@@ -114,13 +124,13 @@ public class PredatorAgentGrid : Agent
         if (other.gameObject.tag == "Wall")
         {
             Debug.Log("Collision on wall");
-            AddReward(-5f);
+            AddReward(-3f);
 
             if (_nWallCollisions >= 10)
             {
                 _nWallCollisions = 0;
                 Debug.Log("Deberia reiniciarse");
-                AddReward(-10f);
+                SetReward(-10f);
                 EndEpisode();
             }
             else
@@ -134,7 +144,7 @@ public class PredatorAgentGrid : Agent
         if (_collisionTime >= _maxCollisionTime)
         {
             _collisionTime = 0.0f;
-            AddReward(-10f);
+            SetReward(-10f);
             EndEpisode();
         }
     }
