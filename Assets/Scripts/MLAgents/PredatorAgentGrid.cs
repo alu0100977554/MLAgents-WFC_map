@@ -10,10 +10,11 @@ public class PredatorAgentGrid : Agent
     private AreaPred _parentArea;
     private GameObject _target;
 
-    private float _moveSpeed = 0.5f;
-    [SerializeField] private float _rotateSpeed = 1f;
+    private Rigidbody _rb;
+    private float _moveSpeed = 0.2f;
+    //[SerializeField] private float _rotateSpeed = 1f;
 
-    private float _logFuncConstant = 1.25f;
+    //private float _logFuncConstant = 1.25f;
 
     private int _nWallCollisions = 0;
     private float _collisionTime = 0.0f;
@@ -24,6 +25,7 @@ public class PredatorAgentGrid : Agent
         base.Initialize();
         _parentArea = GetComponentInParent<AreaPred>();
         _target = _parentArea.GetTarget();
+        _rb = GetComponent<Rigidbody>();
     }
 
     public override void OnEpisodeBegin()
@@ -68,7 +70,8 @@ public class PredatorAgentGrid : Agent
 
         transform.localPosition += new Vector3(moveX, 0, moveZ) * _moveSpeed;
         // transform.Rotate(0, rotateY * _rotateSpeed, 0);
-        float distanceToTarget = Vector3.Distance(_target.transform.localPosition, transform.localPosition);
+        //_rb.AddForce(moveX * _moveSpeed, 0f, moveZ * _moveSpeed);
+        //float distanceToTarget = Vector3.Distance(_target.transform.localPosition, transform.localPosition);
 
         //AddReward((-Mathf.Log10(distanceToTarget / _logFuncConstant) + _logFuncConstant) * 0.05f);
         AddReward(-0.01f);

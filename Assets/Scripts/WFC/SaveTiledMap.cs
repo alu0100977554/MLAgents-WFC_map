@@ -18,7 +18,7 @@ public class SaveTiledMap : MonoBehaviour
         ReadMap();
 
         // Save all the information
-        SaveTiledMap newSavedData = new SaveTiledMap();
+        SaveTiledMap newSavedData = new();
         newSavedData._gridSize = _gridSize;
         newSavedData._nRows = _nRows;
         newSavedData._nColumns = _nColumns;
@@ -26,18 +26,22 @@ public class SaveTiledMap : MonoBehaviour
 
         // Convert the information to string into a JSON file
         string jsonData = JsonUtility.ToJson(newSavedData);
-        PlayerPrefs.SetString("saved_tiled_map", jsonData);
-        PlayerPrefs.Save();
+        System.IO.File.WriteAllText(Application.persistentDataPath + "\\tiles" + GetInstanceID() + ".json", jsonData);
     }
 
     private void ReadMap()
     {
-        foreach (Transform tile in transform)
+        Debug.Log("Entra a ReadMap()");
+        Transform tiles = transform.GetChild(0).GetChild(0);
+        foreach (Transform tile in tiles)
         {
-            if (tile.tag == "Wall" || tile.tag == "Floor")
+            Debug.Log("Tiene hijos");
+            if (tile.CompareTag("Wall") || tile.CompareTag("Floor"))
             {
-                int [] tilePosition = [(int)tile.localPosition.x / _gridSize, (int)tile.localPosition.z / _gridSize];
+                Debug.Log("Ha encontrado un muro o suelo");
+                int [] tilePosition = { (int)tile.localPosition.x / _gridSize, (int)tile.localPosition.z / _gridSize };
                 _tiledMap[tilePosition[0], tilePosition[1]] = tile.gameObject;
+                Debug.Log(_tiledMap.ToString());
             }
         }
     }

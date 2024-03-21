@@ -22,11 +22,14 @@ public class AreaPred : MonoBehaviour
         }
 
         if (_floor != null)
+        {
             _floorBounds = _floor.GetComponent<Renderer>().bounds;
+            Debug.Log("Floor and its bounds found");
+        }   
         else
             Debug.Log("ERROR: Floor not found!");
 
-        ResetArea();
+        //ResetArea();
     }
 
     public GameObject GetAgent()
