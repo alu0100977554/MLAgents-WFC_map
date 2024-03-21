@@ -8,7 +8,7 @@ using Unity.MLAgents.Sensors;
 public class PredatorAgentGrid : Agent
 {
     private AreaPred _parentArea;
-    private GameObject _target;
+    public GameObject _target;
 
     private Rigidbody _rb;
     private float _moveSpeed = 0.2f;
@@ -24,7 +24,6 @@ public class PredatorAgentGrid : Agent
     {
         base.Initialize();
         _parentArea = GetComponentInParent<AreaPred>();
-        _target = _parentArea.GetTarget();
         _rb = GetComponent<Rigidbody>();
     }
 
@@ -109,7 +108,7 @@ public class PredatorAgentGrid : Agent
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Target")
+        if (other.gameObject.tag == "PreyAgent")
         {
             SetReward(10f);
             EndEpisode();
@@ -124,7 +123,12 @@ public class PredatorAgentGrid : Agent
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag == "Wall")
+        if (other.gameObject.tag == "PreyAgent")
+        {
+            SetReward(10f);
+            EndEpisode();
+        }
+        else if (other.gameObject.tag == "Wall")
         {
             Debug.Log("Collision on wall");
             AddReward(-3f);

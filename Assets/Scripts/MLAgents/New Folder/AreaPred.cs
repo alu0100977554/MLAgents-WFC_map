@@ -5,7 +5,7 @@ using Unity.MLAgents;
 
 public class AreaPred : MonoBehaviour
 {
-    [SerializeField] private GameObject _agent;
+    [SerializeField] private GameObject[] _agents;
     [SerializeField] private GameObject _target;
     [SerializeField] private GameObject _floor;
     [SerializeField] private Bounds _floorBounds;
@@ -32,9 +32,9 @@ public class AreaPred : MonoBehaviour
         //ResetArea();
     }
 
-    public GameObject GetAgent()
+    public GameObject GetAgent(int id)
     {
-        return _agent;
+        return _agents[id];
     }
 
     public GameObject GetTarget()
@@ -44,21 +44,24 @@ public class AreaPred : MonoBehaviour
 
     public void ResetArea()
     {
-        ResetAgent();
+        ResetAgents();
         ResetTarget();
     }
 
-    private void ResetAgent()
+    private void ResetAgents()
     {
-        Vector3 tempAgentPosition;
-        do
+        foreach (GameObject agent in _agents)
         {
-            // tempAgentPosition = new Vector3(_floorBounds.center.x, 0.8f,_floorBounds.max.x));
-            tempAgentPosition = new Vector3(Random.Range(_floorBounds.min.x, _floorBounds.max.x), 0.8f, Random.Range(_floorBounds.min.z, _floorBounds.max.z));
-            //tempAgentPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9f));
-            // tempAgentPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
-        } while (Physics.CheckBox(tempAgentPosition, new Vector3(2f, 0.1f, 2f)));
-        _agent.transform.position = tempAgentPosition;
+            Vector3 tempAgentPosition;
+            do
+            {
+                // tempAgentPosition = new Vector3(_floorBounds.center.x, 0.8f,_floorBounds.max.x));
+                tempAgentPosition = new Vector3(Random.Range(_floorBounds.min.x, _floorBounds.max.x), 0.8f, Random.Range(_floorBounds.min.z, _floorBounds.max.z));
+                //tempAgentPosition = new Vector3(Random.Range(6f, -6f), 0.25f, Random.Range(8f, -9f));
+                // tempAgentPosition = new Vector3(Random.Range(12f, 40f), 1.2f, Random.Range(-30f, -9f));
+            } while (Physics.CheckBox(tempAgentPosition, new Vector3(2f, 0.1f, 2f)));
+            agent.transform.position = tempAgentPosition;
+        }
     }
 
     private void ResetTarget()
