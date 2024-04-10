@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
 public class SaveTiledMap : MonoBehaviour
 {
     public int _gridSize;
@@ -16,26 +15,22 @@ public class SaveTiledMap : MonoBehaviour
         _nRows = this.GetComponent<OverlapWFC>().width;
         _nColumns = this.GetComponent<OverlapWFC>().depth;
         _tiledMap = new string[_nRows, _nColumns];
-        Debug.Log(_tiledMap.GetLength(0) + ", " + _tiledMap.GetLength(1));
+        int[] gridInfo = { _gridSize, _nRows, _nColumns };
+        //Debug.Log(_tiledMap.GetLength(0) + ", " + _tiledMap.GetLength(1));
         ReadMap();
 
         // Save all the information
-        SaveTiledMap newSavedData = new();
+        /*SaveTiledMap newSavedData = new();
         newSavedData._gridSize = _gridSize;
         newSavedData._nRows = _nRows;
         newSavedData._nColumns = _nColumns;
         newSavedData._tiledMap = _tiledMap;
 
-        for (int i = 0; i < newSavedData._tiledMap.GetLength(0); i++)
-        {
-            for (int j = 0; j < newSavedData._tiledMap.GetLength(1); j++)
-            {
-                Debug.Log("TileMap[" + i + "," + j + "] = " + newSavedData._tiledMap[i, j]);
-            }
-        }
+        */
 
         // Convert the information to string into a JSON file
-        string jsonData = JsonUtility.ToJson(newSavedData);
+        // string jsonData = JsonUtility.ToJson(newSavedData);
+        string jsonData = JSONHelper.ToJson<int>(gridInfo, _tiledMap);
         System.IO.File.WriteAllText(Application.persistentDataPath + "\\tiles" + GetInstanceID() + ".json", jsonData);
     }
 
