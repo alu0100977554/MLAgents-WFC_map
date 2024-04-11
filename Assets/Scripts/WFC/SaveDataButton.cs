@@ -16,7 +16,6 @@ public class SaveDataButton : Editor
         if (GUILayout.Button("Save Data"))
         {
             savedTiledMap.SaveData();
-            Debug.Log(Application.persistentDataPath);
         }
     }
 }

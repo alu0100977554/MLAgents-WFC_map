@@ -12,9 +12,9 @@ public class JSONHelper : MonoBehaviour
         public string[] _columns;
     }
 
-    public class Wrapper<T>
+    public class Wrapper
     {
-        public T[] _items;
+        public int[] _items;
         public Row[] _tiledMap;
 
         /* Constructor
@@ -22,25 +22,48 @@ public class JSONHelper : MonoBehaviour
          * from SavedTiledMap class and transforms them into an
          * array of Rows, each one containig an array of strings
          */
-        public Wrapper(string [,] tiledMap)
+        public Wrapper(SaveTiledMap savedData)
         {
-            _tiledMap = new Row[tiledMap.GetLength(0)];
-            for (int i = 0; i < tiledMap.GetLength(0); i++)
+            _items = new int[3] { savedData._gridSize, savedData._nRows, savedData._nColumns };
+
+            _tiledMap = new Row[savedData._tiledMap.GetLength(0)];
+            for (int i = 0; i < savedData._tiledMap.GetLength(0); i++)
             {
-                _tiledMap[i]._columns = new string[tiledMap.GetLength(1)];
-                for (int j = 0; j < tiledMap.GetLength(1); j++)
+                _tiledMap[i]._columns = new string[savedData._tiledMap.GetLength(1)];
+                for (int j = 0; j < savedData._tiledMap.GetLength(1); j++)
                 {
-                    _tiledMap[i]._columns[j] = tiledMap[i, j];
+                    _tiledMap[i]._columns[j] = savedData._tiledMap[i, j];
                 }
             }
         }
     }
 
-    public static string ToJson<T>(T[] items, string[,] tiledMap)
+    public static string ToJson(SaveTiledMap savedData)
     {
-        Wrapper<T> wrapper = new Wrapper<T>(tiledMap);
-        wrapper._items = items;
-
+        Wrapper wrapper = new Wrapper(savedData);
         return JsonUtility.ToJson(wrapper);
+    }
+
+    public static LoadTiledMap FromJson(string jsonContent)
+    {
+        Wrapper wrapper = JsonUtility.FromJson<Wrapper>(jsonContent);
+
+        LoadTiledMap loadedData = new LoadTiledMap
+        {
+            _gridSize = wrapper._items[0],
+            _nRows = wrapper._items[1],
+            _nColumns = wrapper._items[2],
+            _tiledMap = new string[wrapper._items[1], wrapper._items[2]]
+        };
+
+        for (int i = 0; i < wrapper._tiledMap.Length; i++)
+        {
+            for (int j = 0; j < wrapper._tiledMap[i]._columns.Length; j++)
+            {
+                loadedData._tiledMap[i, j] = wrapper._tiledMap[i]._columns[j];
+            }
+        }
+
+        return loadedData;
     }
 }
