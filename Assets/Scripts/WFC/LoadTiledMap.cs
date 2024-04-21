@@ -44,7 +44,7 @@ public class LoadTiledMap : MonoBehaviour
                 tiles.position = Vector3.zero;
                 tilePosition = new Vector3((i * modelMapInfo._gridSize), (j * modelMapInfo._gridSize), tiles.localPosition.z);
                 Debug.Log(tilePosition);
-                Instantiate(loadedPrefab, tilePosition, Quaternion.identity, tiles);
+                Instantiate(loadedPrefab, tilePosition, Quaternion.identity, tiles);        // TODO: Fix tiles moving -16.5 units on axis X
                 //tiles.position = Vector3.zero;
             }
             Debug.Log("Done");

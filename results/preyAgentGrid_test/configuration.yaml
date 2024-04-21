@@ -35,7 +35,7 @@ behaviors:
           memory: null
           goal_conditioning_type: hyper
           deterministic: false
-    init_path: results\predAgentGrid_disc\Predator\checkpoint.pt
+    init_path: null
     keep_checkpoints: 5
     even_checkpoints: false
     max_steps: 750000
@@ -66,7 +66,7 @@ engine_settings:
 environment_parameters: null
 checkpoint_settings:
   run_id: preyAgentGrid_test
-  initialize_from: predAgentGrid_disc
+  initialize_from: null
   load_model: false
   resume: false
   force: true

@@ -2,22 +2,22 @@
     "Predator": {
         "checkpoints": [
             {
-                "steps": 109,
-                "file_path": "results\\preyAgentGrid_test\\Predator\\Predator-109.onnx",
+                "steps": 2236,
+                "file_path": "results\\preyAgentGrid_test\\Predator\\Predator-2236.onnx",
                 "reward": null,
-                "creation_time": 1711018423.328009,
+                "creation_time": 1713715445.9361694,
                 "auxillary_file_paths": [
-                    "results\\preyAgentGrid_test\\Predator\\Predator-109.pt"
+                    "results\\preyAgentGrid_test\\Predator\\Predator-2236.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 109,
+            "steps": 2236,
             "file_path": "results\\preyAgentGrid_test\\Predator.onnx",
             "reward": null,
-            "creation_time": 1711018423.328009,
+            "creation_time": 1713715445.9361694,
             "auxillary_file_paths": [
-                "results\\preyAgentGrid_test\\Predator\\Predator-109.pt"
+                "results\\preyAgentGrid_test\\Predator\\Predator-2236.pt"
             ]
         }
     },
