@@ -111,12 +111,14 @@ public class PredatorAgentGrid : Agent
         if (other.gameObject.tag == "PreyAgent")
         {
             SetReward(10f);
+            Debug.Log("Entering prey");
             EndEpisode();
         }
 
         if (other.gameObject.tag == "Boundary")
         {
             SetReward(-10f);
+            Debug.Log("Exiting limits");
             EndEpisode();
         }
     }
@@ -126,6 +128,7 @@ public class PredatorAgentGrid : Agent
         if (other.gameObject.tag == "PreyAgent")
         {
             SetReward(10f);
+            Debug.Log("Entering prey");
             EndEpisode();
         }
         else if (other.gameObject.tag == "Wall")
@@ -147,12 +150,16 @@ public class PredatorAgentGrid : Agent
 
     private void OnCollisionStay(Collision collision)
     {
-        _collisionTime += Time.deltaTime;
-        if (_collisionTime >= _maxCollisionTime)
+        if (collision.gameObject.tag == "Wall")
         {
-            _collisionTime = 0.0f;
-            SetReward(-10f);
-            EndEpisode();
+            _collisionTime += Time.deltaTime;
+            if (_collisionTime >= _maxCollisionTime)
+            {
+                _collisionTime = 0.0f;
+                SetReward(-10f);
+                Debug.Log("Superado el tiempo de colision");
+                EndEpisode();
+            }
         }
     }
 }

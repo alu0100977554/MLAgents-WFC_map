@@ -185,7 +185,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 5000
+  MaxStep: 10000
   _target: {fileID: 6493858192870339029, guid: 5498145245e1976428df1b661d3c610d, type: 3}
 --- !u!114 &6230377689048361550
 MonoBehaviour:
@@ -208,15 +208,17 @@ MonoBehaviour:
   - PreyAgent
   - Wall
   - Boundary
+  - Grass
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 3
   m_MaxColliderBufferSize: 500
   m_InitialColliderBufferSize: 4
   m_DebugColors:
   - {r: 0.9622642, g: 0.7056949, b: 0.43120328, a: 0.7019608}
   - {r: 0.5188679, g: 0.27608782, b: 0.17377181, a: 0.62352943}
   - {r: 0.6320754, g: 0.020870427, b: 0.020870427, a: 0.64705884}
+  - {r: 0.10279459, g: 0.2830189, b: 0.12710893, a: 0.64705884}
   m_GizmoYOffset: 0
   m_ShowGizmos: 1
   m_CompressionType: 1

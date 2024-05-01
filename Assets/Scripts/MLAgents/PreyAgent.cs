@@ -14,13 +14,20 @@ public class PreyAgent : Agent
 
     private int _nWallCollisions = 0;
     private float _collisionTime = 0.0f;
-    private float _maxCollisionTime = 5f;
+    private float _maxCollisionTime = 50f;
+
+    private int _mainLayer;
+    private int _voidLayer;
+    private float _maxHidingTime = 50f;
+    private float _hidingTime = 0f;
 
     public override void Initialize()
     {
         base.Initialize();
         _parentArea = GetComponentInParent<AreaPred>();
         _target = _parentArea.GetTarget();
+        _mainLayer = GetComponent<Collider>().gameObject.layer;
+        _voidLayer = LayerMask.NameToLayer("Void");             // Void layer does not collide with anything
     }
 
     public override void OnEpisodeBegin()
@@ -98,16 +105,42 @@ public class PreyAgent : Agent
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.tag == "Grass")
+        {
+            DisableCollider();
+            Debug.Log("Entering grass");
+        }
+
         if (other.gameObject.tag == "Target")
         {
+            Debug.Log("Entering target");
             SetReward(10f);
             EndEpisode();
         }
 
         if (other.gameObject.tag == "Boundary" || other.gameObject.tag == "PredatorAgent")
         {
+            Debug.Log("Exiting limits");
             SetReward(-10f);
             EndEpisode();
+        }
+    }
+
+    /*private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Grass")
+        {
+            DisableCollider();
+            Debug.Log("Entering grass");
+        }
+    }*/
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Grass" && gameObject.layer == _voidLayer)
+        {
+            Debug.Log("Exiting grass");
+            EnableCollider();
         }
     }
 
@@ -115,7 +148,7 @@ public class PreyAgent : Agent
     {
         if (other.gameObject.tag == "Wall")
         {
-            Debug.Log("Collision on wall");
+            //Debug.Log("Collision on wall");
             AddReward(-3f);
 
             if (_nWallCollisions >= 10)
@@ -132,12 +165,38 @@ public class PreyAgent : Agent
 
     private void OnCollisionStay(Collision collision)
     {
-        _collisionTime += Time.deltaTime;
-        if (_collisionTime >= _maxCollisionTime)
+        if(collision.gameObject.tag == "Wall")
         {
-            _collisionTime = 0.0f;
-            SetReward(-10f);
-            EndEpisode();
+            //Debug.Log("On Collision stay (Wall)");
+            _collisionTime += Time.deltaTime;
+            if (_collisionTime >= _maxCollisionTime)
+            {
+                _collisionTime = 0.0f;
+                Debug.Log("Superado el tiempo de colision");
+                SetReward(-10f);
+                EndEpisode();
+            }
+        }   
+    }
+
+    private void DisableCollider()
+    {
+        GetComponent<Collider>().gameObject.layer = _voidLayer;
+    }
+
+    private void EnableCollider()
+    {
+        GetComponent<Collider>().gameObject.layer = _mainLayer;
+    }
+
+    private void StartTimer()
+    {
+        _hidingTime += Time.deltaTime;
+        Debug.Log(_hidingTime);
+        if (_hidingTime >= _maxHidingTime)
+        {
+            EnableCollider();
+            Debug.Log("Exiting grass");
         }
     }
 }

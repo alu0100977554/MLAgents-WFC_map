@@ -185,7 +185,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 5000
+  MaxStep: 10000
 --- !u!114 &7622690889832169607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,9 +208,10 @@ MonoBehaviour:
   - Wall
   - Boundary
   - PredatorAgent
+  - Grass
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 3
   m_MaxColliderBufferSize: 500
   m_InitialColliderBufferSize: 4
   m_DebugColors:
@@ -218,6 +219,7 @@ MonoBehaviour:
   - {r: 0.509434, g: 0.23237228, b: 0.045656808, a: 0}
   - {r: 0.9150943, g: 0.047481313, b: 0.047481313, a: 0}
   - {r: 0.9150943, g: 0.047481313, b: 0.047481313, a: 0}
+  - {r: 0.084104665, g: 0.2830189, b: 0.08570065, a: 0}
   m_GizmoYOffset: 0
   m_ShowGizmos: 1
   m_CompressionType: 1

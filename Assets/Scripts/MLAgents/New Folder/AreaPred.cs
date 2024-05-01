@@ -44,6 +44,7 @@ public class AreaPred : MonoBehaviour
 
     public void ResetArea()
     {
+        Debug.Log("Resetting area");
         ResetAgents();
         ResetTarget();
     }
