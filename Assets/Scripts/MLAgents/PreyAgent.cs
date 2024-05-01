@@ -10,7 +10,7 @@ public class PreyAgent : Agent
     private AreaPred _parentArea;
     private GameObject _target;
 
-    private float _moveSpeed = 0.17f;
+    private float _moveSpeed = 0.24f;
 
     private int _nWallCollisions = 0;
     private float _collisionTime = 0.0f;

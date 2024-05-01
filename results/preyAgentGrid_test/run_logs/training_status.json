@@ -1,23 +1,63 @@
 {
-    "Predator": {
+    "Prey": {
         "checkpoints": [
             {
-                "steps": 2236,
-                "file_path": "results\\preyAgentGrid_test\\Predator\\Predator-2236.onnx",
-                "reward": null,
-                "creation_time": 1713715445.9361694,
+                "steps": 499952,
+                "file_path": "results\\preyAgentGrid_test\\Prey\\Prey-499952.onnx",
+                "reward": 5.494810612996419,
+                "creation_time": 1713718479.9860382,
                 "auxillary_file_paths": [
-                    "results\\preyAgentGrid_test\\Predator\\Predator-2236.pt"
+                    "results\\preyAgentGrid_test\\Prey\\Prey-499952.pt"
+                ]
+            },
+            {
+                "steps": 500017,
+                "file_path": "results\\preyAgentGrid_test\\Prey\\Prey-500017.onnx",
+                "reward": 5.464006031852171,
+                "creation_time": 1713718480.2987525,
+                "auxillary_file_paths": [
+                    "results\\preyAgentGrid_test\\Prey\\Prey-500017.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 2236,
-            "file_path": "results\\preyAgentGrid_test\\Predator.onnx",
-            "reward": null,
-            "creation_time": 1713715445.9361694,
+            "steps": 500017,
+            "file_path": "results\\preyAgentGrid_test\\Prey.onnx",
+            "reward": 5.464006031852171,
+            "creation_time": 1713718480.2987525,
             "auxillary_file_paths": [
-                "results\\preyAgentGrid_test\\Predator\\Predator-2236.pt"
+                "results\\preyAgentGrid_test\\Prey\\Prey-500017.pt"
+            ]
+        }
+    },
+    "Predator": {
+        "checkpoints": [
+            {
+                "steps": 499968,
+                "file_path": "results\\preyAgentGrid_test\\Predator\\Predator-499968.onnx",
+                "reward": 4.872477734478008,
+                "creation_time": 1713718480.2189476,
+                "auxillary_file_paths": [
+                    "results\\preyAgentGrid_test\\Predator\\Predator-499968.pt"
+                ]
+            },
+            {
+                "steps": 500031,
+                "file_path": "results\\preyAgentGrid_test\\Predator\\Predator-500031.onnx",
+                "reward": 4.88313608479923,
+                "creation_time": 1713718480.3665814,
+                "auxillary_file_paths": [
+                    "results\\preyAgentGrid_test\\Predator\\Predator-500031.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 500031,
+            "file_path": "results\\preyAgentGrid_test\\Predator.onnx",
+            "reward": 4.88313608479923,
+            "creation_time": 1713718480.3665814,
+            "auxillary_file_paths": [
+                "results\\preyAgentGrid_test\\Predator\\Predator-500031.pt"
             ]
         }
     },

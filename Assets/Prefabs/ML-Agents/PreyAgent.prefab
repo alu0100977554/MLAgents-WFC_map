@@ -198,8 +198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a501962d056745d1a30e99146ee39fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SensorName: GridSensor
-  m_CellScale: {x: 1, y: 0.01, z: 1}
+  m_SensorName: PreyGridSensor
+  m_CellScale: {x: 0.75, y: 0.1, z: 0.75}
   m_GridSize: {x: 20, y: 1, z: 20}
   m_RotateWithAgent: 0
   m_AgentGameObject: {fileID: 6493858192870339029}
@@ -210,7 +210,7 @@ MonoBehaviour:
   - PredatorAgent
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   m_MaxColliderBufferSize: 500
   m_InitialColliderBufferSize: 4
   m_DebugColors:
@@ -219,7 +219,7 @@ MonoBehaviour:
   - {r: 0.9150943, g: 0.047481313, b: 0.047481313, a: 0}
   - {r: 0.9150943, g: 0.047481313, b: 0.047481313, a: 0}
   m_GizmoYOffset: 0
-  m_ShowGizmos: 0
+  m_ShowGizmos: 1
   m_CompressionType: 1
   m_ObservationStacks: 1
 --- !u!114 &8940010001939001129

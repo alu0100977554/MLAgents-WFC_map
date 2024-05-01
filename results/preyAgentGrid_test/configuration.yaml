@@ -1,18 +1,18 @@
 default_settings: null
 behaviors:
-  Predator:
+  Prey:
     trainer_type: ppo
     hyperparameters:
-      batch_size: 10
-      buffer_size: 100
+      batch_size: 1024
+      buffer_size: 10240
       learning_rate: 0.0003
-      beta: 0.0005
+      beta: 0.005
       epsilon: 0.2
-      lambd: 0.99
+      lambd: 0.95
       num_epoch: 3
       shared_critic: false
       learning_rate_schedule: linear
-      beta_schedule: constant
+      beta_schedule: linear
       epsilon_schedule: linear
     checkpoint_interval: 500000
     network_settings:
@@ -38,9 +38,53 @@ behaviors:
     init_path: null
     keep_checkpoints: 5
     even_checkpoints: false
-    max_steps: 750000
+    max_steps: 500000
     time_horizon: 64
-    summary_freq: 10000
+    summary_freq: 50000
+    threaded: false
+    self_play: null
+    behavioral_cloning: null
+  Predator:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 1024
+      buffer_size: 10240
+      learning_rate: 0.0003
+      beta: 0.005
+      epsilon: 0.2
+      lambd: 0.95
+      num_epoch: 3
+      shared_critic: false
+      learning_rate_schedule: linear
+      beta_schedule: linear
+      epsilon_schedule: linear
+    checkpoint_interval: 500000
+    network_settings:
+      normalize: false
+      hidden_units: 128
+      num_layers: 2
+      vis_encode_type: simple
+      memory: null
+      goal_conditioning_type: hyper
+      deterministic: false
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+        network_settings:
+          normalize: false
+          hidden_units: 128
+          num_layers: 2
+          vis_encode_type: simple
+          memory: null
+          goal_conditioning_type: hyper
+          deterministic: false
+    init_path: null
+    keep_checkpoints: 5
+    even_checkpoints: false
+    max_steps: 500000
+    time_horizon: 64
+    summary_freq: 50000
     threaded: false
     self_play: null
     behavioral_cloning: null
