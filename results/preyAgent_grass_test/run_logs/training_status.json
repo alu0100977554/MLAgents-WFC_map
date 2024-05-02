@@ -1,0 +1,47 @@
+{
+    "Prey": {
+        "checkpoints": [
+            {
+                "steps": 208657,
+                "file_path": "results\\preyAgent_grass_test\\Prey\\Prey-208657.onnx",
+                "reward": 8.287204648566059,
+                "creation_time": 1714636988.2261217,
+                "auxillary_file_paths": [
+                    "results\\preyAgent_grass_test\\Prey\\Prey-208657.pt"
+                ]
+            },
+            {
+                "steps": 499982,
+                "file_path": "results\\preyAgent_grass_test\\Prey\\Prey-499982.onnx",
+                "reward": 9.656930711009714,
+                "creation_time": 1714637816.4357781,
+                "auxillary_file_paths": [
+                    "results\\preyAgent_grass_test\\Prey\\Prey-499982.pt"
+                ]
+            },
+            {
+                "steps": 500003,
+                "file_path": "results\\preyAgent_grass_test\\Prey\\Prey-500003.onnx",
+                "reward": 9.656543227772653,
+                "creation_time": 1714637816.535681,
+                "auxillary_file_paths": [
+                    "results\\preyAgent_grass_test\\Prey\\Prey-500003.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 500003,
+            "file_path": "results\\preyAgent_grass_test\\Prey.onnx",
+            "reward": 9.656543227772653,
+            "creation_time": 1714637816.535681,
+            "auxillary_file_paths": [
+                "results\\preyAgent_grass_test\\Prey\\Prey-500003.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "2.2.1+cu121"
+    }
+}
