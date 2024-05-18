@@ -1,0 +1,38 @@
+{
+    "Prey": {
+        "checkpoints": [
+            {
+                "steps": 499990,
+                "file_path": "results\\preyAgent_grass_test2\\Prey\\Prey-499990.onnx",
+                "reward": 9.61209087344733,
+                "creation_time": 1716055286.9127603,
+                "auxillary_file_paths": [
+                    "results\\preyAgent_grass_test2\\Prey\\Prey-499990.pt"
+                ]
+            },
+            {
+                "steps": 500027,
+                "file_path": "results\\preyAgent_grass_test2\\Prey\\Prey-500027.onnx",
+                "reward": 9.610050368423183,
+                "creation_time": 1716055287.0574536,
+                "auxillary_file_paths": [
+                    "results\\preyAgent_grass_test2\\Prey\\Prey-500027.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 500027,
+            "file_path": "results\\preyAgent_grass_test2\\Prey.onnx",
+            "reward": 9.610050368423183,
+            "creation_time": 1716055287.0574536,
+            "auxillary_file_paths": [
+                "results\\preyAgent_grass_test2\\Prey\\Prey-500027.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "2.2.1+cu121"
+    }
+}

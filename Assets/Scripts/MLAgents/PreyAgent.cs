@@ -9,15 +9,20 @@ public class PreyAgent : Agent
 {
     private AreaPred _parentArea;
     private GameObject _target;
+    private GameObject _predator;
 
     private float _moveSpeed = 0.24f;
+
+    [SerializeField] private float _minDistanceToPredator = 3.0f;
+    [SerializeField] private float _distanceToPredator;
+
+    private int _mainLayer;
+    private int _voidLayer;
 
     private int _nWallCollisions = 0;
     private float _collisionTime = 0.0f;
     private float _maxCollisionTime = 50f;
 
-    private int _mainLayer;
-    private int _voidLayer;
     private float _maxHidingTime = 50f;
     private float _hidingTime = 0f;
 
@@ -26,6 +31,7 @@ public class PreyAgent : Agent
         base.Initialize();
         _parentArea = GetComponentInParent<AreaPred>();
         _target = _parentArea.GetTarget();
+        _predator = _parentArea.GetAgent(0);
         _mainLayer = GetComponent<Collider>().gameObject.layer;
         _voidLayer = LayerMask.NameToLayer("Void");             // Void layer does not collide with anything
     }
@@ -37,8 +43,9 @@ public class PreyAgent : Agent
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(transform.localPosition);          // Adding Agent's position to Observation vector
-        sensor.AddObservation(_target.transform.localPosition);   // Adding Target's position to Observation vector
+        sensor.AddObservation(transform.localPosition);             // Adding Agent's position to Observation vector
+        sensor.AddObservation(_target.transform.localPosition);     // Adding Target's position to Observation vector
+        sensor.AddObservation(_predator.transform.localPosition);   // Adding Predator's position to Observation vector
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -71,6 +78,12 @@ public class PreyAgent : Agent
         }
 
         transform.localPosition += new Vector3(moveX, 0, moveZ) * _moveSpeed;
+
+        _distanceToPredator = Vector3.Distance(transform.localPosition, _predator.transform.localPosition);
+        if (_distanceToPredator < _minDistanceToPredator)
+        {
+            AddReward(-0.05f);
+        }
 
         AddReward(0.005f);
     }
