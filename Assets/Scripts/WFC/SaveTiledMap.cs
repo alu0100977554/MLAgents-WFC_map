@@ -30,7 +30,7 @@ public class SaveTiledMap : MonoBehaviour
         Transform tiles = transform.GetChild(1).GetChild(0);
         foreach (Transform tile in tiles)
         {
-            if (tile.CompareTag("Wall") || tile.CompareTag("Floor"))
+            if (tile.CompareTag("Wall") || tile.CompareTag("Floor") || tile.CompareTag("Grass"))
             {
                 int [] tilePosition = { (int)tile.localPosition.x / _gridSize, (int)tile.localPosition.y / _gridSize };
                 _tiledMap[tilePosition[0], tilePosition[1]] = tile.tag;

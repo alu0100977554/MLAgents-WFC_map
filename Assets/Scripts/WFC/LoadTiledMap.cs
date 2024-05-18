@@ -40,14 +40,15 @@ public class LoadTiledMap : MonoBehaviour
             for (int j = 0; j < tiledMap.GetLength(1); j++)
             {
                 loadedPrefab = (tiledMap[i, j] == "")? (GameObject)Resources.Load("prefabs/Untagged") : (GameObject)Resources.Load("prefabs/" + tiledMap[i, j]);
-                Debug.Log("(" + i + ", " + j + "): " + tiledMap[i,j]);
-                tiles.position = Vector3.zero;
-                tilePosition = new Vector3((i * modelMapInfo._gridSize), (j * modelMapInfo._gridSize), tiles.localPosition.z);
-                Debug.Log(tilePosition);
+                //Debug.Log("(" + i + ", " + j + "): " + tiledMap[i,j]);
+                tiles.localPosition = Vector3.zero;
+                tilePosition = new Vector3((i * modelMapInfo._gridSize) + tiles.position.x, (j * modelMapInfo._gridSize), tiles.localPosition.z);
+                //Debug.Log(tilePosition);
                 Instantiate(loadedPrefab, tilePosition, Quaternion.identity, tiles);        // TODO: Fix tiles moving -16.5 units on axis X
                 //tiles.position = Vector3.zero;
             }
-            Debug.Log("Done");
+            //tiles.position = Vector3.zero;
         }
+        Debug.Log("Done");
     }
 }
