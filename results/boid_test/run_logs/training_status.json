@@ -1,0 +1,29 @@
+{
+    "BoidAgent": {
+        "checkpoints": [
+            {
+                "steps": 13200,
+                "file_path": "results\\boid_test\\BoidAgent\\BoidAgent-13200.onnx",
+                "reward": null,
+                "creation_time": 1716142994.9003658,
+                "auxillary_file_paths": [
+                    "results\\boid_test\\BoidAgent\\BoidAgent-13200.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 13200,
+            "file_path": "results\\boid_test\\BoidAgent.onnx",
+            "reward": null,
+            "creation_time": 1716142994.9003658,
+            "auxillary_file_paths": [
+                "results\\boid_test\\BoidAgent\\BoidAgent-13200.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.0.0",
+        "torch_version": "2.2.1+cu121"
+    }
+}

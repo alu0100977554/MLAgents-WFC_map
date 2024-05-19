@@ -8,7 +8,7 @@ public class AreaPred : MonoBehaviour
     [SerializeField] private GameObject[] _agents;
     [SerializeField] private GameObject _target;
     [SerializeField] private GameObject _floor;
-    [SerializeField] private Bounds _floorBounds;
+    [SerializeField] public Bounds _floorBounds;
 
     public void Start()
     {
