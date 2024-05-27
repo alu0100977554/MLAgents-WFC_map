@@ -11,6 +11,8 @@ TagManager:
   - PredatorAgent
   - PreyAgent
   - Grass
+  - ShooterAgent
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - Void
   - Water
   - UI
-  - 
+  - Enemy
   - 
   - 
   - 

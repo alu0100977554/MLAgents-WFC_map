@@ -11,7 +11,7 @@ public class PredatorAgentGrid : Agent
     public GameObject _target;
 
     private Rigidbody _rb;
-    private float _moveSpeed = 0.15f;
+    private float _moveSpeed = 0.2f;
     //[SerializeField] private float _rotateSpeed = 1f;
 
     //private float _logFuncConstant = 1.25f;

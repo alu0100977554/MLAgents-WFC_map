@@ -1,0 +1,225 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Unity.MLAgents;
+using System;
+using Unity.MLAgents.Actuators;
+using Unity.MLAgents.Sensors;
+
+public class ShooterAgent : Agent
+{
+    [Tooltip("Speed to rotate around the up axis")]
+    public float _rotationSpeed = 75f;
+
+    [Tooltip("The agent's camera")]
+    public Camera agentCamera;
+
+    [Tooltip("Wheter this is training mode or gameplay mode")]
+    public bool _trainingMode;
+
+    // Rigidbody of the agent
+    private Rigidbody _rigidbody;
+
+    // Shooting point (gun)
+    public Transform _shootingPoint;
+
+    // The area where the agent is in
+    private ShooterArea _shooterArea;
+
+    // Maximum aiming angle to receive a reward
+    public float _maxAimingAngle = 15f;
+
+    // The nearest enemy to the agent
+    private Enemy _nearestEnemy;
+
+    // Allows for smoother rotation changes
+    private float _smoothRotationChange = 0f;
+
+    /// <summary>
+    /// The amount of accumulated point for shooting enemies
+    /// </summary>
+    public float TotalScore { get; private set; }
+
+    /// <summary>
+    /// A vector pointing straight forward out of the agent
+    /// </summary>
+    public Vector3 AgentForwardVector
+    {
+        get
+        {
+            return this.transform.forward;
+        }
+    }
+
+    /// <summary>
+    /// Initialize the agent
+    /// </summary>
+    public override void Initialize()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+        _shooterArea = GetComponentInParent<ShooterArea>();
+
+        // If the playing is controlling the agent, max step is set to infinite
+        if (!_trainingMode) MaxStep = 0;
+    }
+
+    /// <summary>
+    /// Reset the agent when the episode begins and update the nearest enemy
+    /// </summary>
+    public override void OnEpisodeBegin()
+    {
+        Respawn();
+        UpdateNearestEnemy();
+    }
+
+    /// <summary>
+    /// Collect vector observation from the environment
+    /// </summary>
+    /// <param name="sensor">The vector sensor</param>
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        // The neural network works better with observation values between 0 and 1, so all
+        // vectors and quaternions will be normalized
+
+        // Observe the agent's local rotation (4 observations)
+        sensor.AddObservation(this.transform.localRotation.normalized);
+
+        // Get a vector from the agent to the nearest enemy
+        Vector3 toNearestEnemy = _nearestEnemy.transform.position - this.transform.position ;
+
+        // Observe the normalized vector to the nearest enemy (3 observations)
+        sensor.AddObservation(toNearestEnemy.normalized);
+
+        // Observe the angle between the agent's forward vector and the vector to nearest enemy
+        // Note: Vector3.Angle() returns always a value between 0 and 180
+        sensor.AddObservation((Vector3.Angle(AgentForwardVector, toNearestEnemy)) % 180);
+
+        // 8 total observations
+    }
+
+    /// <summary>
+    /// Called when action is received from either the player or the neural network
+    /// 
+    /// actions.ContinuousActions[i] represents:
+    /// Index 0: rotate around Y axis (+1 = turn right, -1 = turn left)
+    /// 
+    /// actions.DiscreteActions[i] represents:
+    /// Index 1: shoot (+1 = shoot, 0: don't shoot) - por ahora no
+    /// </summary>
+    /// <param name="actions">The actions to take</param>
+    public override void OnActionReceived(ActionBuffers actions)
+    {
+        // Get the current rotation
+        Vector3 rotationVector = transform.rotation.eulerAngles;
+
+        // Calculate rotation
+        float rotationChange = actions.ContinuousActions[0];
+
+        // Calculate smooth rotation changes
+        _smoothRotationChange = Mathf.MoveTowards(_smoothRotationChange, rotationChange, 2f * Time.fixedDeltaTime);
+
+        // Calculate new rotation based ont smoothed values
+        float rotation = rotationVector.y + _smoothRotationChange * Time.fixedDeltaTime * _rotationSpeed;
+
+        // Apply new rotation
+        this.transform.rotation = Quaternion.Euler(0f, rotation, 0f);
+
+        // Get the current aiming angle to the nearest enemy, if it is less than _maxAimingAngle,
+        // add reward, else substract reward
+        Vector3 toNearestEnemy = this.transform.position - _nearestEnemy.transform.position;
+        float currentAimingAngle = Vector3.Angle(AgentForwardVector, toNearestEnemy);
+        if (currentAimingAngle < _maxAimingAngle)
+            AddReward(0.01f);
+        else
+            AddReward(-0.001f);
+    }
+
+    /// <summary>
+    /// When behaviour type is set to "Heuristic only" on the agent's Behaviour Parameters,
+    /// this function will be called. Its return values will be fed into
+    /// <<see cref="OnActionReceived(ActionBuffers)"/> instead of using the neural network
+    /// </summary>
+    /// <param name="actionsOut">An output action array</param>
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        // Create placeholders for turning
+        float rotation = 0f;
+
+        // Convert keyboard inputs to movement and turning
+        // All values should be between -1 and +1
+
+        // Turn left/right
+        if (Input.GetKey(KeyCode.A)) rotation = -1f;
+        else if (Input.GetKey(KeyCode.D)) rotation = 1f;
+
+        // Apply movement
+        ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+        continuousActions[0] = rotation;
+    }
+
+    /// <summary>
+    /// Try to respawn the agent on a different safe position
+    /// </summary>
+    public void Respawn()
+    {
+        int attemptsReamining = 100;
+        Vector3 potentialPosition = new Vector3(UnityEngine.Random.Range(_shooterArea._areaBounds.min.x, _shooterArea._areaBounds.max.x),
+                                                1f,
+                                                UnityEngine.Random.Range(_shooterArea._areaBounds.min.z, _shooterArea._areaBounds.max.z));
+
+        // Check for collision
+        while (Physics.CheckBox(potentialPosition, new Vector3(2f, 0.1f, 2f)) && attemptsReamining > 0) attemptsReamining--;
+
+        this.transform.position = potentialPosition;
+    }
+
+    /// <summary>
+    /// Update the nearest enemy to the agent
+    /// </summary>
+    private void UpdateNearestEnemy()
+    {
+        foreach (Enemy enemy in _shooterArea._enemies)
+        {
+            if (_nearestEnemy == null && enemy.isActiveAndEnabled)
+            {
+                _nearestEnemy = enemy;
+            }
+            else if (enemy.isActiveAndEnabled)
+            {
+                // Calculate distance to this enemy and to the current nearest enemy
+                float distanceToEnemy = Vector3.Distance(this.transform.position, enemy.transform.position);
+                float distanceToNearestEnemy = Vector3.Distance(this.transform.position, _nearestEnemy.transform.position);
+
+                // If nearest enemy isn't active, or enemy is closer, update the nearest enemy
+                if (!_nearestEnemy.isActiveAndEnabled || distanceToEnemy < distanceToNearestEnemy)
+                    _nearestEnemy = enemy;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Called every frame
+    /// </summary>
+    private void Update()
+    {
+        // Draw a line from the agent to the nearest enemy
+        if (_nearestEnemy != null)
+        {
+            Debug.DrawLine(this.transform.position, _nearestEnemy.transform.position, Color.green);
+        }
+    }
+
+    /// <summary>
+    /// Called every 0.02 seconds
+    /// </summary>
+    private void FixedUpdate()
+    {
+        Debug.DrawRay(this.transform.position, AgentForwardVector, Color.green, Time.fixedDeltaTime);
+
+        // Avoid possible scenario where the nearest enemy may not be updated
+        if (_nearestEnemy != null && !_nearestEnemy.isActiveAndEnabled)
+        {
+            UpdateNearestEnemy();
+        }
+    }
+}

@@ -49,7 +49,7 @@ public class AreaPred : MonoBehaviour
         ResetTarget();
     }
 
-    private void ResetAgents()
+    public void ResetAgents()
     {
         foreach (GameObject agent in _agents)
         {
@@ -65,7 +65,7 @@ public class AreaPred : MonoBehaviour
         }
     }
 
-    private void ResetTarget()
+    public void ResetTarget()
     {
         Vector3 tempTargetPosition;
         do
