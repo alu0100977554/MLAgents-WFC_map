@@ -2,31 +2,22 @@
     "Shooter": {
         "checkpoints": [
             {
-                "steps": 499944,
-                "file_path": "results\\shooterAgent_01\\Shooter\\Shooter-499944.onnx",
-                "reward": 46.62483057628075,
-                "creation_time": 1716759004.000896,
+                "steps": 25967,
+                "file_path": "results\\shooterAgent_01\\Shooter\\Shooter-25967.onnx",
+                "reward": 1.1575906674631617,
+                "creation_time": 1716825973.8428028,
                 "auxillary_file_paths": [
-                    "results\\shooterAgent_01\\Shooter\\Shooter-499944.pt"
-                ]
-            },
-            {
-                "steps": 500712,
-                "file_path": "results\\shooterAgent_01\\Shooter\\Shooter-500712.onnx",
-                "reward": 46.62483057628075,
-                "creation_time": 1716759004.0682747,
-                "auxillary_file_paths": [
-                    "results\\shooterAgent_01\\Shooter\\Shooter-500712.pt"
+                    "results\\shooterAgent_01\\Shooter\\Shooter-25967.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 500712,
+            "steps": 25967,
             "file_path": "results\\shooterAgent_01\\Shooter.onnx",
-            "reward": 46.62483057628075,
-            "creation_time": 1716759004.0682747,
+            "reward": 1.1575906674631617,
+            "creation_time": 1716825973.8428028,
             "auxillary_file_paths": [
-                "results\\shooterAgent_01\\Shooter\\Shooter-500712.pt"
+                "results\\shooterAgent_01\\Shooter\\Shooter-25967.pt"
             ]
         }
     },

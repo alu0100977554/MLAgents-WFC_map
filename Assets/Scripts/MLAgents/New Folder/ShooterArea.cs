@@ -7,13 +7,15 @@ public class ShooterArea : MonoBehaviour
 {
     // List of all agents within the area
     public List<ShooterAgent> _agents;
+
     // List of enemies within the area
     public List<Enemy> _enemies;
+
+    public int _activeEnemies;
 
     [SerializeField]
     private GameObject _area;
 
-    [SerializeField]
     public Bounds _areaBounds;
 
     /// <summary>
@@ -29,6 +31,7 @@ public class ShooterArea : MonoBehaviour
         {
             enemy.Respawn();
         }
+        _activeEnemies = _enemies.Count;
     }
 
     /// <summary>
@@ -50,6 +53,8 @@ public class ShooterArea : MonoBehaviour
 
         // Enemies correspond with child index 1
         FindChildEnemies(transform.GetChild(1));
+
+        _activeEnemies = _enemies.Count;
     }
 
     /// <summary>

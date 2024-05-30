@@ -11,10 +11,20 @@ public class ShooterAgent : Agent
     [Tooltip("Speed to rotate around the up axis")]
     public float _rotationSpeed = 75f;
 
+    [Tooltip("Whether the agent can shoot or not")]
+    public bool _availableShot;
+
+    public int _maxStepsBetweenShots = 10;
+
+    private int _currentStepsBetweenShots = 0;
+
+    [Tooltip("Damage per shot")]
+    public int _shotDamage = 1;
+
     [Tooltip("The agent's camera")]
     public Camera agentCamera;
 
-    [Tooltip("Wheter this is training mode or gameplay mode")]
+    [Tooltip("Whether this is training mode or gameplay mode")]
     public bool _trainingMode;
 
     // Rigidbody of the agent
@@ -58,18 +68,20 @@ public class ShooterAgent : Agent
     {
         _rigidbody = GetComponent<Rigidbody>();
         _shooterArea = GetComponentInParent<ShooterArea>();
+        _availableShot = true;
 
         // If the playing is controlling the agent, max step is set to infinite
         if (!_trainingMode) MaxStep = 0;
     }
 
     /// <summary>
-    /// Reset the agent when the episode begins and update the nearest enemy
+    /// Reset the agents and enemies when the episode begins and update the nearest enemy
     /// </summary>
     public override void OnEpisodeBegin()
     {
-        Respawn();
+        _shooterArea.ResetScene();
         UpdateNearestEnemy();
+        _availableShot = true;
     }
 
     /// <summary>
@@ -92,9 +104,12 @@ public class ShooterAgent : Agent
 
         // Observe the angle between the agent's forward vector and the vector to nearest enemy
         // Note: Vector3.Angle() returns always a value between 0 and 180
-        sensor.AddObservation((Vector3.Angle(AgentForwardVector, toNearestEnemy)) % 180);
+        sensor.AddObservation((Vector3.Angle(AgentForwardVector, toNearestEnemy) + 180) % 180);
 
-        // 8 total observations
+        // Observe if the shot is available
+        sensor.AddObservation(_availableShot);
+
+        // 9 total observations
     }
 
     /// <summary>
@@ -126,12 +141,16 @@ public class ShooterAgent : Agent
 
         // Get the current aiming angle to the nearest enemy, if it is less than _maxAimingAngle,
         // add reward, else substract reward
-        Vector3 toNearestEnemy = this.transform.position - _nearestEnemy.transform.position;
+        Vector3 toNearestEnemy = _nearestEnemy.transform.position - this.transform.position;
         float currentAimingAngle = Vector3.Angle(AgentForwardVector, toNearestEnemy);
         if (currentAimingAngle < _maxAimingAngle)
             AddReward(0.01f);
         else
             AddReward(-0.001f);
+
+        // Try to shoot at nearest enemy
+        if (actions.DiscreteActions[0] == 1 && _availableShot == true)
+            Shoot();
     }
 
     /// <summary>
@@ -155,6 +174,10 @@ public class ShooterAgent : Agent
         // Apply movement
         ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
         continuousActions[0] = rotation;
+
+        // Shoot
+        ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
+        discreteActions[0] = Input.GetKey(KeyCode.P) ? 1 : 0;
     }
 
     /// <summary>
@@ -198,6 +221,40 @@ public class ShooterAgent : Agent
     }
 
     /// <summary>
+    /// The agent shoot a projectile
+    /// </summary>
+    private void Shoot()
+    {
+        int layerMask = 1 << LayerMask.NameToLayer("Enemy");
+        Debug.DrawRay(_shootingPoint.position, AgentForwardVector, Color.red, 0.3f);
+        _availableShot = false;
+
+        if (Physics.Raycast(_shootingPoint.position, AgentForwardVector, out var hit, 200f, layerMask))
+        {
+            // Call GetShot() function from Enemy and get a reward
+            hit.transform.GetComponent<Enemy>().GetShot(_shotDamage);
+            AddReward(0.01f);
+
+            // Check number of active enemies. Update nearest enemy if there are remaining enemies,
+            // end the episode if there are not any left
+            foreach (Enemy enemy in _shooterArea._enemies)
+            {
+                if (enemy.gameObject.activeSelf)
+                {
+                    UpdateNearestEnemy();
+                    break;
+                }
+            }
+            EndEpisode();
+        }
+        else
+        {
+            // Substract reward if the shot fails
+            AddReward(-0.005f);
+        }
+    }
+
+    /// <summary>
     /// Called every frame
     /// </summary>
     private void Update()
@@ -215,6 +272,18 @@ public class ShooterAgent : Agent
     private void FixedUpdate()
     {
         Debug.DrawRay(this.transform.position, AgentForwardVector, Color.green, Time.fixedDeltaTime);
+
+        // Reload shot every _maxStepsBetweenShots * 0.02 s
+        if (!_availableShot)
+        {
+            _currentStepsBetweenShots++;
+            if (_currentStepsBetweenShots >= _maxStepsBetweenShots)
+            {
+                _availableShot = true;
+                _currentStepsBetweenShots = 0;
+            }
+        }
+        _availableShot = true;
 
         // Avoid possible scenario where the nearest enemy may not be updated
         if (_nearestEnemy != null && !_nearestEnemy.isActiveAndEnabled)
