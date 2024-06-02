@@ -90,4 +90,14 @@ public class ShooterArea : MonoBehaviour
             }
         }
     }
+
+    /// <summary>
+    /// Called every 0.02 seconds
+    /// </summary>
+    private void FixedUpdate()
+    {
+        // Check if the nearest enemy is in range
+        if (_activeEnemies <= 0)
+            ResetScene();
+    }
 }

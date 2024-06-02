@@ -5,18 +5,31 @@ using Unity.MLAgents;
 using System;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Integrations.Match3;
 
 public class ShooterAgent : Agent
 {
+    [Tooltip("Force to apply when moving")]
+    public float _moveForce = 1e-6f;
+
     [Tooltip("Speed to rotate around the up axis")]
     public float _rotationSpeed = 75f;
 
     [Tooltip("Whether the agent can shoot or not")]
     public bool _availableShot;
 
-    public int _maxStepsBetweenShots = 10;
+    public int _maxStepsBetweenShots = 100;
 
     private int _currentStepsBetweenShots = 0;
+
+    [Tooltip("Max shooting range")]
+    public float _maxShootingRange = 5.0f;
+
+    [Tooltip("Whether the nearest enemy is in shooting range")]
+    public bool _nearestEnemyInRange;
+
+    // Distance to nearest enemy
+    private float _distanceToNearestEnemy;
 
     [Tooltip("Damage per shot")]
     public int _shotDamage = 1;
@@ -109,14 +122,25 @@ public class ShooterAgent : Agent
         // Observe if the shot is available
         sensor.AddObservation(_availableShot);
 
-        // 9 total observations
+        // Observe if the nearest enemy is in shooting range
+        sensor.AddObservation(_nearestEnemyInRange);
+
+        // Get the distance to the nearest enemy
+        _distanceToNearestEnemy = Vector3.Distance(_nearestEnemy.transform.position, this.transform.position);
+
+        // Observe that distance
+        //sensor.AddObservation(_distanceToNearestEnemy);
+
+        // 10 total observations
     }
 
     /// <summary>
     /// Called when action is received from either the player or the neural network
     /// 
     /// actions.ContinuousActions[i] represents:
-    /// Index 0: rotate around Y axis (+1 = turn right, -1 = turn left)
+    /// Index 0: move vector x (+1 = right, -1 = left)
+    /// Index 1: move vector z (+1 = forward, -1 = backward)
+    /// Index 2: rotate around Y axis (+1 = turn right, -1 = turn left) 
     /// 
     /// actions.DiscreteActions[i] represents:
     /// Index 1: shoot (+1 = shoot, 0: don't shoot) - por ahora no
@@ -124,11 +148,17 @@ public class ShooterAgent : Agent
     /// <param name="actions">The actions to take</param>
     public override void OnActionReceived(ActionBuffers actions)
     {
+        // Calculate movement vector
+        Vector3 movement = new Vector3(actions.ContinuousActions[0], 0f, actions.ContinuousActions[1]);
+
+        // Add force in the direction of the move vector
+        _rigidbody.AddForce(movement * _moveForce);
+
         // Get the current rotation
         Vector3 rotationVector = transform.rotation.eulerAngles;
 
         // Calculate rotation
-        float rotationChange = actions.ContinuousActions[0];
+        float rotationChange = actions.ContinuousActions[2];
 
         // Calculate smooth rotation changes
         _smoothRotationChange = Mathf.MoveTowards(_smoothRotationChange, rotationChange, 2f * Time.fixedDeltaTime);
@@ -144,7 +174,7 @@ public class ShooterAgent : Agent
         Vector3 toNearestEnemy = _nearestEnemy.transform.position - this.transform.position;
         float currentAimingAngle = Vector3.Angle(AgentForwardVector, toNearestEnemy);
         if (currentAimingAngle < _maxAimingAngle)
-            AddReward(0.01f);
+            AddReward(0.001f);
         else
             AddReward(-0.001f);
 
@@ -161,19 +191,36 @@ public class ShooterAgent : Agent
     /// <param name="actionsOut">An output action array</param>
     public override void Heuristic(in ActionBuffers actionsOut)
     {
+        // Create placeholders for all movement/turning
+        Vector3 forward = Vector3.zero;
+        Vector3 left = Vector3.zero;
+
         // Create placeholders for turning
         float rotation = 0f;
+
+        // Forward/backward
+        if (Input.GetKey(KeyCode.W)) forward = transform.forward;
+        else if (Input.GetKey(KeyCode.S)) forward = -transform.forward;
+
+        // Left/right
+        if (Input.GetKey(KeyCode.A)) left = -transform.right;
+        else if (Input.GetKey(KeyCode.D)) left = transform.right;
 
         // Convert keyboard inputs to movement and turning
         // All values should be between -1 and +1
 
         // Turn left/right
-        if (Input.GetKey(KeyCode.A)) rotation = -1f;
-        else if (Input.GetKey(KeyCode.D)) rotation = 1f;
+        if (Input.GetKey(KeyCode.Q)) rotation = -1f;
+        else if (Input.GetKey(KeyCode.E)) rotation = 1f;
+
+        // Combine the movement vectors and normalize
+        Vector3 combined = (forward + left).normalized;;
 
         // Apply movement
         ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
-        continuousActions[0] = rotation;
+        continuousActions[0] = combined.x;
+        continuousActions[1] = combined.z;
+        continuousActions[2] = rotation;
 
         // Shoot
         ActionSegment<int> discreteActions = actionsOut.DiscreteActions;
@@ -233,25 +280,37 @@ public class ShooterAgent : Agent
         {
             // Call GetShot() function from Enemy and get a reward
             hit.transform.GetComponent<Enemy>().GetShot(_shotDamage);
-            AddReward(0.01f);
+            AddReward(0.1f);
 
             // Check number of active enemies. Update nearest enemy if there are remaining enemies,
             // end the episode if there are not any left
+            bool activeEnemies = false;
             foreach (Enemy enemy in _shooterArea._enemies)
             {
                 if (enemy.gameObject.activeSelf)
                 {
+                    activeEnemies = true;
                     UpdateNearestEnemy();
                     break;
                 }
             }
-            EndEpisode();
+            if (!activeEnemies) 
+                EndEpisode();
         }
         else
         {
             // Substract reward if the shot fails
-            AddReward(-0.005f);
+            AddReward(-0.05f);
         }
+    }
+
+    /// <summary>
+    /// Called on the first frame
+    /// </summary>
+    private void Start()
+    {
+        // Draw a sphere to see the shooting range
+        //Gizmos.DrawWireSphere(this.transform.position, _maxShootingRange);
     }
 
     /// <summary>
@@ -271,7 +330,15 @@ public class ShooterAgent : Agent
     /// </summary>
     private void FixedUpdate()
     {
-        Debug.DrawRay(this.transform.position, AgentForwardVector, Color.green, Time.fixedDeltaTime);
+        // Check if the nearest enemy is in range
+        /*if (_distanceToNearestEnemy < _maxShootingRange)
+        {
+            _nearestEnemyInRange = true;
+        }
+        else
+        {
+            _nearestEnemyInRange = false;
+        }*/
 
         // Reload shot every _maxStepsBetweenShots * 0.02 s
         if (!_availableShot)
@@ -283,12 +350,20 @@ public class ShooterAgent : Agent
                 _currentStepsBetweenShots = 0;
             }
         }
-        _availableShot = true;
 
-        // Avoid possible scenario where the nearest enemy may not be updated
-        if (_nearestEnemy != null && !_nearestEnemy.isActiveAndEnabled)
+            // Avoid possible scenario where the nearest enemy may not be updated
+            if (_nearestEnemy != null && !_nearestEnemy.isActiveAndEnabled)
         {
             UpdateNearestEnemy();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Boundary" || other.gameObject.tag == "Enemy")
+        {
+            SetReward(-0.5f);
+            EndEpisode();
         }
     }
 }

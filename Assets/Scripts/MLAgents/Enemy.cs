@@ -62,4 +62,9 @@ public class Enemy : MonoBehaviour
     {
         this.gameObject.SetActive(false);
     }
+
+    private void Awake()
+    {
+        _shooterArea = GetComponentInParent<ShooterArea>();
+    }
 }
