@@ -320,6 +320,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scoreText: {fileID: 0}
   _score: 0
+  _rivalAgent: {fileID: 0}
+  _rivalScoreText: {fileID: 0}
+  _rivalScore: 0
 --- !u!1 &6188369684789178411
 GameObject:
   m_ObjectHideFlags: 0
@@ -578,7 +581,7 @@ Rigidbody:
   m_GameObject: {fileID: 6493858192870339029}
   serializedVersion: 4
   m_Mass: 0.0000001
-  m_Drag: 0.01
+  m_Drag: 1
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -612,7 +615,7 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 5000
-  _moveForce: 2
+  _moveForce: 0.000002
   _rotationSpeed: 100
   _availableShot: 0
   _maxStepsBetweenShots: 100
@@ -622,6 +625,7 @@ MonoBehaviour:
   agentCamera: {fileID: 1596723642815277022}
   _trainingMode: 1
   _shootingPoint: {fileID: 4568330602365718931}
+  _shooterArea: {fileID: 0}
   _maxAimingAngle: 15
   _scoreManager: {fileID: 0}
 --- !u!114 &7538358112576755395

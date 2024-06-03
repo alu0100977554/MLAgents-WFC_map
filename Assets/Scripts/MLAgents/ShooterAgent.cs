@@ -47,6 +47,7 @@ public class ShooterAgent : Agent
     public Transform _shootingPoint;
 
     // The area where the agent is in
+    [SerializeField]
     private ShooterArea _shooterArea;
 
     // Maximum aiming angle to receive a reward
@@ -290,9 +291,11 @@ public class ShooterAgent : Agent
             hit.transform.GetComponent<Enemy>().GetShot(_shotDamage);
             AddReward(0.1f);
 
+            _scoreManager._score++;
+
             // Check number of active enemies. Update nearest enemy if there are remaining enemies,
             // end the episode if there are not any left
-            /*bool activeEnemies = false;
+            bool activeEnemies = false;
             foreach (Enemy enemy in _shooterArea._enemies)
             {
                 if (enemy.gameObject.activeSelf)
@@ -303,11 +306,9 @@ public class ShooterAgent : Agent
                 }
             }
             if (!activeEnemies) 
-                EndEpisode();*/
+                EndEpisode();
 
-            _scoreManager._score++;
-
-            UpdateNearestEnemy();
+            //UpdateNearestEnemy();
         }
         else
         {

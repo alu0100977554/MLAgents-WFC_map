@@ -96,7 +96,6 @@ public class ShooterArea : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        // Check if the nearest enemy is in range
         if (_activeEnemies <= 0)
             ResetScene();
     }

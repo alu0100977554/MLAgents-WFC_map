@@ -1026,6 +1026,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3671370935792905093}
     m_Modifications:
+    - target: {fileID: 1549059256710672868, guid: 01ddbf8bc05315b4289cf72200e836b0, type: 3}
+      propertyPath: _moveForce
+      value: 0.000001
+      objectReference: {fileID: 0}
     - target: {fileID: 5043207936717211626, guid: 01ddbf8bc05315b4289cf72200e836b0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.93
@@ -1069,6 +1073,10 @@ PrefabInstance:
     - target: {fileID: 6493858192870339029, guid: 01ddbf8bc05315b4289cf72200e836b0, type: 3}
       propertyPath: m_Name
       value: ShooterAgent
+      objectReference: {fileID: 0}
+    - target: {fileID: 8449094372982121796, guid: 01ddbf8bc05315b4289cf72200e836b0, type: 3}
+      propertyPath: m_BehaviorType
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
