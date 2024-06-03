@@ -58,10 +58,9 @@ public class ShooterAgent : Agent
     // Allows for smoother rotation changes
     private float _smoothRotationChange = 0f;
 
-    /// <summary>
-    /// The amount of accumulated point for shooting enemies
-    /// </summary>
-    public float TotalScore { get; private set; }
+    // Total score this episode
+    [SerializeField]
+    private ScoreManager _scoreManager;
 
     /// <summary>
     /// A vector pointing straight forward out of the agent
@@ -95,6 +94,7 @@ public class ShooterAgent : Agent
         _shooterArea.ResetScene();
         UpdateNearestEnemy();
         _availableShot = true;
+        _scoreManager = this.transform.GetChild(1).GetChild(0).GetComponentInChildren<ScoreManager>();
     }
 
     /// <summary>
@@ -248,11 +248,13 @@ public class ShooterAgent : Agent
     /// </summary>
     private void UpdateNearestEnemy()
     {
+        bool allEnemiesInactive = true;
         foreach (Enemy enemy in _shooterArea._enemies)
         {
             if (_nearestEnemy == null && enemy.isActiveAndEnabled)
             {
                 _nearestEnemy = enemy;
+                //allEnemiesInactive = false;
             }
             else if (enemy.isActiveAndEnabled)
             {
@@ -262,9 +264,15 @@ public class ShooterAgent : Agent
 
                 // If nearest enemy isn't active, or enemy is closer, update the nearest enemy
                 if (!_nearestEnemy.isActiveAndEnabled || distanceToEnemy < distanceToNearestEnemy)
+                {
                     _nearestEnemy = enemy;
+                    //allEnemiesInactive = true;
+                }
             }
         }
+
+        //if (allEnemiesInactive)
+            //_nearestEnemy = null;
     }
 
     /// <summary>
@@ -284,7 +292,7 @@ public class ShooterAgent : Agent
 
             // Check number of active enemies. Update nearest enemy if there are remaining enemies,
             // end the episode if there are not any left
-            bool activeEnemies = false;
+            /*bool activeEnemies = false;
             foreach (Enemy enemy in _shooterArea._enemies)
             {
                 if (enemy.gameObject.activeSelf)
@@ -295,7 +303,11 @@ public class ShooterAgent : Agent
                 }
             }
             if (!activeEnemies) 
-                EndEpisode();
+                EndEpisode();*/
+
+            _scoreManager._score++;
+
+            UpdateNearestEnemy();
         }
         else
         {
@@ -351,8 +363,8 @@ public class ShooterAgent : Agent
             }
         }
 
-            // Avoid possible scenario where the nearest enemy may not be updated
-            if (_nearestEnemy != null && !_nearestEnemy.isActiveAndEnabled)
+        // Avoid possible scenario where the nearest enemy may not be updated
+        if (_nearestEnemy != null && !_nearestEnemy.isActiveAndEnabled)
         {
             UpdateNearestEnemy();
         }
