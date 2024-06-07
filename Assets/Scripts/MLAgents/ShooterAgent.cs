@@ -6,6 +6,7 @@ using System;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Integrations.Match3;
+using Unity.Burst.CompilerServices;
 
 public class ShooterAgent : Agent
 {
@@ -17,6 +18,13 @@ public class ShooterAgent : Agent
 
     [Tooltip("Whether the agent can shoot or not")]
     public bool _availableShot;
+
+    [Tooltip("Damage per shot")]
+    public int _shotDamage = 1;
+
+    // Prefab of the bullet shot
+    [SerializeField]
+    private GameObject _bulletPrefab;
 
     public int _maxStepsBetweenShots = 100;
 
@@ -30,9 +38,6 @@ public class ShooterAgent : Agent
 
     // Distance to nearest enemy
     private float _distanceToNearestEnemy;
-
-    [Tooltip("Damage per shot")]
-    public int _shotDamage = 1;
 
     [Tooltip("The agent's camera")]
     public Camera agentCamera;
@@ -246,11 +251,50 @@ public class ShooterAgent : Agent
     }
 
     /// <summary>
+    /// Increments score if the agent shots an enemy
+    /// </summary>
+    /// <param name="other">The object wich the bullet collides with</param>
+    public void AddScore(Collider other)
+    {
+        // Call GetShot() function from Enemy and get a reward
+        other.transform.GetComponent<Enemy>().GetShot(_shotDamage);
+        AddReward(0.1f);
+
+        // Increment agent's score
+        _scoreManager._score++;
+
+        CheckRemainingEnemies();
+    }
+
+    /// <summary>
+    /// Check for remaining active enemies after shooting one
+    /// </summary>
+    private void CheckRemainingEnemies()
+    {
+        // Ckeck if each enemy is active or not
+        bool activeEnemies = false;
+        foreach (Enemy enemy in _shooterArea._enemies)
+        {
+            if (enemy.gameObject.activeSelf)
+            {
+                // Update nearest enemy if at least one enemy is active
+                activeEnemies = true;
+                UpdateNearestEnemy();
+                break;
+            }
+        }
+
+        // End episode if there is no enemies active
+        if (!activeEnemies)
+            EndEpisode();
+    }
+
+    /// <summary>
     /// Update the nearest enemy to the agent
     /// </summary>
     private void UpdateNearestEnemy()
     {
-        bool allEnemiesInactive = true;
+        //bool allEnemiesInactive = true;
         foreach (Enemy enemy in _shooterArea._enemies)
         {
             if (_nearestEnemy == null && enemy.isActiveAndEnabled)
@@ -282,11 +326,15 @@ public class ShooterAgent : Agent
     /// </summary>
     private void Shoot()
     {
-        int layerMask = 1 << LayerMask.NameToLayer("Enemy");
+        //int layerMask = 1 << LayerMask.NameToLayer("Enemy");
         Debug.DrawRay(_shootingPoint.position, AgentForwardVector, Color.red, 0.3f);
         _availableShot = false;
 
-        if (Physics.Raycast(_shootingPoint.position, AgentForwardVector, out var hit, 200f, layerMask))
+        // Fire the bullet
+        GameObject bullet = Instantiate(_bulletPrefab, _shootingPoint.position, _shootingPoint.rotation, this.transform);
+        bullet.GetComponent<Rigidbody>().AddForce(AgentForwardVector * 5000f);
+
+        /*if (Physics.Raycast(_shootingPoint.position, AgentForwardVector, out var hit, 200f, layerMask))
         {
             // Call GetShot() function from Enemy and get a reward
             hit.transform.GetComponent<Enemy>().GetShot(_shotDamage);
@@ -315,7 +363,7 @@ public class ShooterAgent : Agent
         {
             // Substract reward if the shot fails
             AddReward(-0.05f);
-        }
+        }*/
     }
 
     /// <summary>

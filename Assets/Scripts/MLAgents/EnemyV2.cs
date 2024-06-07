@@ -221,7 +221,7 @@ public class EnemyV2 : Agent
     /// </summary>
     private void UpdateNearestAgent()
     {
-        bool allEnemiesInactive = true;
+        //bool allEnemiesInactive = true;
         foreach (ShooterAgent agent in _shooterArea._agents)
         {
             if (_nearestAgent == null && agent.isActiveAndEnabled)

@@ -42,9 +42,9 @@ public class Enemy : MonoBehaviour
 
         // Maximun number of attemps to respawn without colliding with another object
         int attemptsReamining = 100;
-        Vector3 potentialPosition = new Vector3(UnityEngine.Random.Range(_shooterArea._areaBounds.min.x, _shooterArea._areaBounds.max.x),
+        Vector3 potentialPosition = new Vector3(UnityEngine.Random.Range(_shooterArea._teamEnemiesBounds.min.x, _shooterArea._teamEnemiesBounds.max.x),
                                                 1f,
-                                                UnityEngine.Random.Range(_shooterArea._areaBounds.min.z, _shooterArea._areaBounds.max.z));
+                                                UnityEngine.Random.Range(_shooterArea._teamEnemiesBounds.min.z, _shooterArea._teamEnemiesBounds.max.z));
 
         // Check for collision
         while (Physics.CheckBox(potentialPosition, new Vector3(2f, 0.1f, 2f)) && attemptsReamining > 0) attemptsReamining--;

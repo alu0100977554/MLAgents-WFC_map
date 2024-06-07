@@ -16,7 +16,8 @@ public class ShooterArea : MonoBehaviour
     [SerializeField]
     private GameObject _area;
 
-    public Bounds _areaBounds;
+    public Bounds _teamAgentsBounds;
+    public Bounds _teamEnemiesBounds;
 
     /// <summary>
     /// Resets all the agents and enemies in the area
@@ -40,7 +41,8 @@ public class ShooterArea : MonoBehaviour
     private void Awake()
     {
         Debug.Assert(_area != null, "The area is NULL");
-        _areaBounds = _area.GetComponent<Renderer>().bounds;
+        _teamAgentsBounds = _area.transform.GetChild(0).GetComponent<Renderer>().bounds;
+        _teamEnemiesBounds = _area.transform.GetChild(1).GetComponent<Renderer>().bounds;
     }
 
     /// <summary>

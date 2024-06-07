@@ -168,6 +168,37 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 862211947608301140}
   m_Enabled: 0
+--- !u!1 &3869414897823163346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2201359588465329752}
+  m_Layer: 0
+  m_Name: ShootingPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2201359588465329752
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3869414897823163346}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.53}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4568330602365718931}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4088472976621761777
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,7 +244,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SensorName: RayPerceptionSensor
-  m_DetectableTags: []
+  m_DetectableTags:
+  - Wall
+  - Boundary
   m_RaysPerDirection: 3
   m_MaxRayDegrees: 60
   m_SphereCastRadius: 0.3
@@ -354,7 +387,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0.6}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.3}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2201359588465329752}
   m_Father: {fileID: 5043207936717211626}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5421745382302826263
@@ -424,7 +458,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -618,13 +652,14 @@ MonoBehaviour:
   _moveForce: 0.000002
   _rotationSpeed: 100
   _availableShot: 0
+  _shotDamage: 1
+  _bulletPrefab: {fileID: 5263379128203010266, guid: 72f12d94418cfcd43bda64dfde8eb193, type: 3}
   _maxStepsBetweenShots: 100
   _maxShootingRange: 5
   _nearestEnemyInRange: 0
-  _shotDamage: 1
   agentCamera: {fileID: 1596723642815277022}
   _trainingMode: 1
-  _shootingPoint: {fileID: 4568330602365718931}
+  _shootingPoint: {fileID: 2201359588465329752}
   _shooterArea: {fileID: 0}
   _maxAimingAngle: 15
   _scoreManager: {fileID: 0}
