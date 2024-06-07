@@ -10,7 +10,7 @@ using Unity.MLAgents.Integrations.Match3;
 public class ShooterAgent : Agent
 {
     [Tooltip("Force to apply when moving")]
-    public float _moveForce = 1e-6f;
+    public float _moveForce = 2e-6f;
 
     [Tooltip("Speed to rotate around the up axis")]
     public float _rotationSpeed = 75f;
@@ -111,7 +111,7 @@ public class ShooterAgent : Agent
         sensor.AddObservation(this.transform.localRotation.normalized);
 
         // Get a vector from the agent to the nearest enemy
-        Vector3 toNearestEnemy = _nearestEnemy.transform.position - this.transform.position ;
+        Vector3 toNearestEnemy = _nearestEnemy.transform.position - this.transform.position;
 
         // Observe the normalized vector to the nearest enemy (3 observations)
         sensor.AddObservation(toNearestEnemy.normalized);
@@ -233,10 +233,11 @@ public class ShooterAgent : Agent
     /// </summary>
     public void Respawn()
     {
+        this.gameObject.SetActive(true);
         int attemptsReamining = 100;
-        Vector3 potentialPosition = new Vector3(UnityEngine.Random.Range(_shooterArea._areaBounds.min.x, _shooterArea._areaBounds.max.x),
+        Vector3 potentialPosition = new Vector3(UnityEngine.Random.Range(_shooterArea._teamAgentsBounds.min.x, _shooterArea._teamAgentsBounds.max.x),
                                                 1f,
-                                                UnityEngine.Random.Range(_shooterArea._areaBounds.min.z, _shooterArea._areaBounds.max.z));
+                                                UnityEngine.Random.Range(_shooterArea._teamAgentsBounds.min.z, _shooterArea._teamAgentsBounds.max.z));
 
         // Check for collision
         while (Physics.CheckBox(potentialPosition, new Vector3(2f, 0.1f, 2f)) && attemptsReamining > 0) attemptsReamining--;
@@ -376,6 +377,7 @@ public class ShooterAgent : Agent
         if (other.gameObject.tag == "Boundary" || other.gameObject.tag == "Enemy")
         {
             SetReward(-0.5f);
+            //this.gameObject.SetActive(false);
             EndEpisode();
         }
     }
