@@ -22,11 +22,13 @@ public class ShooterAgent : Agent
     [Tooltip("Damage per shot")]
     public int _shotDamage = 1;
 
+    private bool _shootingTrajectoryBlocked;
+
     // Prefab of the bullet shot
     [SerializeField]
     private GameObject _bulletPrefab;
 
-    public int _maxStepsBetweenShots = 100;
+    public int _maxStepsBetweenShots = 25;
 
     private int _currentStepsBetweenShots = 0;
 
@@ -122,22 +124,29 @@ public class ShooterAgent : Agent
         sensor.AddObservation(toNearestEnemy.normalized);
 
         // Observe the angle between the agent's forward vector and the vector to nearest enemy
-        // Note: Vector3.Angle() returns always a value between 0 and 180
+        // Note: Vector3.Angle() returns always a value between 0 and 180 (1 observation)
         sensor.AddObservation((Vector3.Angle(AgentForwardVector, toNearestEnemy) + 180) % 180);
 
-        // Observe if the shot is available
+        // Observe if the shot is available (1 observation)
         sensor.AddObservation(_availableShot);
 
-        // Observe if the nearest enemy is in shooting range
+        // Observe if the nearest enemy is in shooting range (1 obersvation)
         sensor.AddObservation(_nearestEnemyInRange);
 
+        // Observe if there is a clear shot to an enemy (1 observation)
+        sensor.AddObservation(_shootingTrajectoryBlocked);
+
         // Get the distance to the nearest enemy
-        _distanceToNearestEnemy = Vector3.Distance(_nearestEnemy.transform.position, this.transform.position);
+        //_distanceToNearestEnemy = Vector3.Distance(_nearestEnemy.transform.position, this.transform.position);
+        _distanceToNearestEnemy = toNearestEnemy.magnitude;
+        Renderer areaRenderer = _shooterArea.transform.GetChild(2).GetComponent<Renderer>();
+        float diagonal = Vector3.Distance(new Vector3(areaRenderer.bounds.max.x, 0f, areaRenderer.bounds.max.z),
+                                          new Vector3(areaRenderer.bounds.min.x, 0f, areaRenderer.bounds.min.z));
 
-        // Observe that distance
-        //sensor.AddObservation(_distanceToNearestEnemy);
+        // Observe that distance (1 observation)
+        sensor.AddObservation(_distanceToNearestEnemy / diagonal);
 
-        // 10 total observations
+        // 12 total observations
     }
 
     /// <summary>
@@ -261,7 +270,7 @@ public class ShooterAgent : Agent
         AddReward(0.1f);
 
         // Increment agent's score
-        _scoreManager._score++;
+        //_scoreManager._score++;
 
         CheckRemainingEnemies();
     }
@@ -326,7 +335,6 @@ public class ShooterAgent : Agent
     /// </summary>
     private void Shoot()
     {
-        //int layerMask = 1 << LayerMask.NameToLayer("Enemy");
         Debug.DrawRay(_shootingPoint.position, AgentForwardVector, Color.red, 0.3f);
         _availableShot = false;
 
@@ -402,6 +410,13 @@ public class ShooterAgent : Agent
             _nearestEnemyInRange = false;
         }*/
 
+        // Check if trajectory is clear
+        int layerMask = 1 << LayerMask.NameToLayer("Enemy");
+        if (Physics.Raycast(_shootingPoint.position, AgentForwardVector, out var hit, 200f, layerMask))
+            _shootingTrajectoryBlocked = false;
+        else
+            _shootingTrajectoryBlocked = true;
+
         // Reload shot every _maxStepsBetweenShots * 0.02 s
         if (!_availableShot)
         {
@@ -414,7 +429,7 @@ public class ShooterAgent : Agent
         }
 
         // Avoid possible scenario where the nearest enemy may not be updated
-        if (_nearestEnemy != null && !_nearestEnemy.isActiveAndEnabled)
+        if (_nearestEnemy != null && !_nearestEnemy.isActiveAndEnabled || _currentStepsBetweenShots >= _maxStepsBetweenShots)
         {
             UpdateNearestEnemy();
         }
@@ -427,6 +442,15 @@ public class ShooterAgent : Agent
             SetReward(-0.5f);
             //this.gameObject.SetActive(false);
             EndEpisode();
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "Wall")
+        {
+            Debug.Log("Collision on wall");
+            AddReward(-0.01f);
         }
     }
 }
