@@ -13,6 +13,7 @@ TagManager:
   - Grass
   - ShooterAgent
   - Enemy
+  - FSMAgent_patrol
   layers:
   - Default
   - TransparentFX

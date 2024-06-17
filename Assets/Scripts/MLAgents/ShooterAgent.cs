@@ -158,7 +158,7 @@ public class ShooterAgent : Agent
     /// Index 2: rotate around Y axis (+1 = turn right, -1 = turn left) 
     /// 
     /// actions.DiscreteActions[i] represents:
-    /// Index 1: shoot (+1 = shoot, 0: don't shoot) - por ahora no
+    /// Index 0: shoot (+1 = shoot, 0: don't shoot) - por ahora no
     /// </summary>
     /// <param name="actions">The actions to take</param>
     public override void OnActionReceived(ActionBuffers actions)
