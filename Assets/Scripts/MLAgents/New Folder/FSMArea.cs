@@ -12,13 +12,13 @@ public class FSMArea : MonoBehaviour
     [HideInInspector]
     public int _prefabIndex = 0;
 
-    public GameObject _enemyPrefab;
-
     // Number of agents
     public int _maxAgents = 1;
 
     // List of all agents within the area
-    public List<FSMAgent_patrol> _agents;
+    public List<FSMAgent> _agents;
+
+    public GameObject _enemyPrefab;
 
     // Number of enemies
     public int _maxEnemies = 1;
@@ -26,11 +26,18 @@ public class FSMArea : MonoBehaviour
     // List of enemies within the area
     public List<FSMEnemy> _enemies;
 
-    public int _activeEnemies;
+    public GameObject _targetPrefab;
+
+    // Number of targets
+    public int _maxTargets = 5;
+
+    // List of targets
+    public List<GameObject> _targets;
 
     [SerializeField]
     private GameObject _area;
 
+    public Bounds _areaBounds;
     public Bounds _teamAgentsBounds;
     public Bounds _teamEnemiesBounds;
 
@@ -39,15 +46,17 @@ public class FSMArea : MonoBehaviour
     /// </summary>
     public void ResetScene()
     {
-        foreach (FSMAgent_patrol agent in _agents)
+        foreach (FSMAgent agent in _agents)
         {
             agent.Respawn();
         }
+        _agents[1].Freeze();
+        _agents[2].Freeze();
         foreach (FSMEnemy enemy in _enemies)
         {
             enemy.Respawn();
         }
-        _activeEnemies = _enemies.Count;
+        ResetTargets();
     }
 
     /// <summary>
@@ -55,23 +64,28 @@ public class FSMArea : MonoBehaviour
     /// </summary>
     private void Awake()
     {
+        Debug.Assert(_area != null, "The area is NULL");
+        _areaBounds = _area.GetComponent<Renderer>().bounds;
+        _teamAgentsBounds = _area.transform.GetChild(0).GetComponent<Renderer>().bounds;
+        _teamEnemiesBounds = _area.transform.GetChild(1).GetComponent<Renderer>().bounds;
+
         // Instantiate _maxAgents agents as childs of Agents
-        for(int i = 0; i < _maxAgents; i++)
+        for (int i = 0; i < _maxAgents; i++)
         {
-            /*foreach (GameObject agent in _agentPrefabs)
-            {
-                GameObject newAgent = Instantiate(agent, this.transform.position, Quaternion.identity, this.transform.GetChild(0));
-            }*/
             // Spawn new FSMAgent_patrol
             GameObject newPatrolAgent = Instantiate(_agentPrefabs[0], this.transform.position, Quaternion.identity, this.transform.GetChild(0));
+            _agents.Add(newPatrolAgent.GetComponent<FSMAgent>());
             _prefabIndex = 0;
-            _agents.Add(newPatrolAgent.GetComponent<FSMAgent_patrol>());
 
             GameObject newChaseAgent = Instantiate(_agentPrefabs[1], this.transform.position, Quaternion.identity, this.transform.GetChild(0));
-            newChaseAgent.SetActive(false);
+            _agents.Add(newChaseAgent.GetComponent<FSMAgent>());
+            newChaseAgent.GetComponent<FSMAgent_chase>().Freeze();
+            //_prefabIndex = 1;
 
             GameObject newShootAgent = Instantiate(_agentPrefabs[2], this.transform.position, Quaternion.identity, this.transform.GetChild(0));
-            newChaseAgent.SetActive(false);
+            _agents.Add(newShootAgent.GetComponent<FSMAgent>());
+            newShootAgent.GetComponent<FSMAgent_shoot>().Freeze();
+            //_prefabIndex = 2;
         }
 
         // Instantiate _maxEnemies enemies as childs of Enemies
@@ -81,9 +95,11 @@ public class FSMArea : MonoBehaviour
             _enemies.Add(newEnemy.GetComponent<FSMEnemy>());
         }
 
-        Debug.Assert(_area != null, "The area is NULL");
-        _teamAgentsBounds = _area.transform.GetChild(0).GetComponent<Renderer>().bounds;
-        _teamEnemiesBounds = _area.transform.GetChild(1).GetComponent<Renderer>().bounds;
+        for (int i = 0; i < _maxTargets; i++)
+        {
+            GameObject newTarget = Instantiate(_targetPrefab, this.transform.position, Quaternion.identity, this.transform.GetChild(2));
+            _targets.Add(newTarget);
+        }
     }
 
     /*/// <summary>
@@ -109,7 +125,7 @@ public class FSMArea : MonoBehaviour
         for (int i = 0; i < agents.childCount; i++)
         {
             Transform child = agents.GetChild(i);
-            if (child.CompareTag("FSMAgent_patrol"))
+            if (child.CompareTag("FSMAgent"))
             {
                 FSMAgent_patrol agent = child.GetComponent<FSMAgent_patrol>();
                 _agents.Add(agent);
@@ -137,9 +153,29 @@ public class FSMArea : MonoBehaviour
     /// <summary>
     /// Called every 0.02 seconds
     /// </summary>
-    private void FixedUpdate()
+    /*private void FixedUpdate()
     {
         if (_activeEnemies <= 0)
             ResetScene();
+    }*/
+
+    private void ResetTargets()
+    {
+        foreach (GameObject target in _targets)
+        {
+            // First, set the enemy to active
+            target.SetActive(true);
+
+            // Maximun number of attemps to respawn without colliding with another object
+            int attemptsReamining = 100;
+            Vector3 potentialPosition = new Vector3(UnityEngine.Random.Range(_areaBounds.min.x, _areaBounds.max.x),
+                                                    1.4f,
+                                                    UnityEngine.Random.Range(_areaBounds.min.z, _areaBounds.max.z));
+
+            // Check for collision
+            while (Physics.CheckBox(potentialPosition, new Vector3(3f, 1.5f, 3f)) && attemptsReamining > 0) attemptsReamining--;
+
+            target.transform.position = potentialPosition;
+        }
     }
 }

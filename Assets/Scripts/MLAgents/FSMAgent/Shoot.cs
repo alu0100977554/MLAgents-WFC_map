@@ -15,7 +15,7 @@ public class Shoot : StateMachineBehaviour
     }
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // Get the position and rotation of the last agent, and update the new prefab index
         Transform agentTransform = animator.transform.GetChild(0).GetChild(animator.gameObject.GetComponent<FSMArea>()._prefabIndex);
@@ -27,17 +27,22 @@ public class Shoot : StateMachineBehaviour
         _chaseAgent = animator.gameObject.transform.GetChild(0).GetChild(1).gameObject;
         _shootAgent = animator.gameObject.transform.GetChild(0).GetChild(2).gameObject;
 
-        // Set the patrol and chase agents to inactive
-        _patrolAgent.SetActive(false);
-        _chaseAgent.SetActive(false);
-
         // Set the shoot agent's position and rotation
-        _shootAgent.transform.position = agentTransform.position;
+        _shootAgent.GetComponent<FSMAgent_shoot>().Unfreeze(agentTransform);
+        _shootAgent.GetComponent<FSMAgent_shoot>().UpdateNearestEnemy();
+
+        // Set the patrol and chase agents to inactive
+        //_patrolAgent.SetActive(false);
+        //_chaseAgent.SetActive(false);
+        _patrolAgent.GetComponent<FSMAgent_patrol>().Freeze();
+        _chaseAgent.GetComponent<FSMAgent_chase>().Freeze();
+
+        /*_shootAgent.transform.position = agentTransform.position;
         _shootAgent.transform.rotation = agentTransform.rotation;
         _shootAgent.GetComponent<Rigidbody>().velocity = agentRigidbody.velocity;
         //_patrolAgent.gameObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
-        _shootAgent.SetActive(true);
+        _shootAgent.SetActive(true);*/
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

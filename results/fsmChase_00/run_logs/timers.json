@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1718880497",
+        "python_version": "3.9.19 (main, May  6 2024, 20:12:36) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "E:\\Programas\\Miniconda\\envs\\mlagents\\Scripts\\mlagents-learn --run-id=fsmChase_00 --force",
+        "mlagents_version": "0.30.0",
+        "mlagents_envs_version": "0.30.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.2.2+cu121",
+        "numpy_version": "1.21.2",
+        "end_time_seconds": "1718880564"
+    },
+    "total": 66.5495067,
+    "count": 1,
+    "self": 0.0025445999999931246,
+    "children": {
+        "run_training.setup": {
+            "total": 0.011950600000000033,
+            "count": 1,
+            "self": 0.011950600000000033
+        },
+        "TrainerController.start_learning": {
+            "total": 66.5350115,
+            "count": 1,
+            "self": 8.18000000037955e-05,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 66.5349147,
+                    "count": 1,
+                    "self": 66.5349147
+                },
+                "TrainerController._save_models": {
+                    "total": 1.499999999055035e-05,
+                    "count": 1,
+                    "self": 1.499999999055035e-05
+                }
+            }
+        }
+    }
+}

@@ -6,85 +6,24 @@ using System;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 
-public class FSMAgent_chase : Agent
+public class FSMAgent_chase : FSMAgent
 {
-    public Animator _animator;
-    //public Patrol _patrolStateMachine;
-
-    [Tooltip("Force to apply when moving")]
-    public float _moveForce = 2e-6f;
-
-    [Tooltip("Speed to rotate around the up axis")]
-    public float _rotationSpeed = 75f;
-
-    // Spawning point
-    private Transform _spawningPoint;
-
-    // The area around spawning point the agent is patrolling
-    private float _patrollingArea = 25f;
-
-    [Tooltip("Detection radius")]
-    public float _detectionRadius = 20.0f;
-
-    // The nearest enemy to the agent
-    private FSMEnemy _nearestEnemy;
-
-    // Distance to nearest enemy
-    private float _distanceToNearestEnemy;
-
-    [Tooltip("Whether the nearest enemy is in shooting range")]
-    public bool _nearestEnemyInRange;
-
-    // Distance to nearest enemy
+    [SerializeField]
     private bool _isInPatrollingArea;
-
-    [Tooltip("The agent's camera")]
-    public Camera agentCamera;
-
-    [Tooltip("Whether this is training mode or gameplay mode")]
-    public bool _trainingMode;
-
-    // Rigidbody of the agent
-    private Rigidbody _rigidbody;
-
-    // The area where the agent is in
-    public FSMArea _fsmArea;
-
-    // Allows for smoother rotation changes
-    private float _smoothRotationChange = 0f;
-
-    /// <summary>
-    /// A vector pointing straight forward out of the agent
-    /// </summary>
-    public Vector3 AgentForwardVector
-    {
-        get
-        {
-            return this.transform.forward;
-        }
-    }
 
     /// <summary>
     /// Initialize the agent
     /// </summary>
     public override void Initialize()
     {
-        _animator = GetComponentInParent<Animator>();
+        /*_animator = GetComponentInParent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _fsmArea = GetComponentInParent<FSMArea>();
         _spawningPoint = this.transform;
 
         // If the playing is controlling the agent, max step is set to infinite
-        if (!_trainingMode) MaxStep = 0;
-    }
-
-    /// <summary>
-    /// Reset the agents and enemies when the episode begins and update the nearest enemy
-    /// </summary>
-    public override void OnEpisodeBegin()
-    {
-        //_fsmArea.ResetScene();
-        UpdateNearestEnemy();
+        if (!_trainingMode) MaxStep = 0;*/
+        base.Initialize();
     }
 
     /// <summary>
@@ -99,29 +38,41 @@ public class FSMAgent_chase : Agent
         // Observe the agent's local rotation (4 observations)
         sensor.AddObservation(this.transform.localRotation.normalized);
 
-        // Get a vector from the agent to the nearest enemy
-        Vector3 toPatrollingAreaCentre = _spawningPoint.transform.position - this.transform.position;
+        // Get a vector from the agent to the nearest agent
+        Vector3 toNearestEnemy = _nearestEnemy.transform.position - this.transform.position;
 
-        // Observe the normalized vector to the centre of the patrolling area (3 observations)
-        sensor.AddObservation(toPatrollingAreaCentre.normalized);
+        // Observe the normalized vector to the nearest agent (3 observations)
+        sensor.AddObservation(toNearestEnemy.normalized);
 
-        // Observe the relative distance from the agent's position to the centre of the patrolling area (1 obersvation)
-        sensor.AddObservation(toPatrollingAreaCentre.magnitude / _patrollingArea);
+        // Observe that distance, relative (1 observation)
+        sensor.AddObservation(toNearestEnemy.normalized.magnitude);
 
-        // 8 total observations
+        // Observe the angle between the agent's forward vector and the vector to nearest enemy
+        // Note: Vector3.Angle() returns always a value between 0 and 180 (1 observation)
+        sensor.AddObservation((Vector3.Angle(AgentForwardVector, toNearestEnemy) + 180) % 180);
+
+        // Observe the passive movement speed (1 observation)
+        sensor.AddObservation(_passiveMovementSpeed / 0.05f);
+
+        // 10 total observations
     }
 
     /// <summary>
     /// Called when action is received from either the player or the neural network
     /// 
     /// actions.ContinuousActions[i] represents:
-    /// Index 1: rotate around Y axis (+1 = turn right, -1 = turn left)
-    /// Index 1: move vector x (+1 = right, -1 = left)
-    /// Index 2: move vector z (+1 = forward, -1 = backward)
+    /// Index 0: rotate around Y axis (+1 = turn right, -1 = turn left)
+    /// Index 1: move vector z (+1 = forward, -1 = backward)
+    /// Index 2: change patrolling speed
     /// </summary>
     /// <param name="actions">The actions to take</param>
     public override void OnActionReceived(ActionBuffers actions)
     {
+        if (_frozen)
+        {
+            return;
+        }
+
         // Get the current rotation
         Vector3 rotationVector = transform.rotation.eulerAngles;
 
@@ -138,19 +89,30 @@ public class FSMAgent_chase : Agent
         this.transform.rotation = Quaternion.Euler(0f, rotation, 0f);
 
         // Calculate movement vector
-        Vector3 movement = new Vector3(actions.ContinuousActions[1], 0f, actions.ContinuousActions[2]);
+        Vector3 movement = new Vector3(0f, 0f, actions.ContinuousActions[1]);
+
+        // Calculate the passive movement speed
+        _passiveMovementSpeed = Mathf.Clamp(_passiveMovementSpeed + (actions.ContinuousActions[2] / 20f), -0.01f, 0.05f);
 
         // Add force in the direction of the move vector
-        _rigidbody.AddForce(movement * _moveForce);
+        //_rigidbody.AddForce(movement * _moveForce);
+        //this.gameObject.transform.Translate(movement * Time.deltaTime);
+        this.transform.position += _passiveMovementSpeed * AgentForwardVector + movement * Time.deltaTime * _moveForce;
 
-        if (_isInPatrollingArea)
+        Vector3 toNearestEnemy = _nearestEnemy.transform.position - this.transform.position;
+        if (toNearestEnemy.magnitude > 10f)
         {
-            AddReward(0.01f);
+            AddReward(0.003f);
         }
         else
         {
-            AddReward(-0.005f);
+            AddReward(-0.001f);
         }
+
+        if ((Vector3.Angle(AgentForwardVector, toNearestEnemy) + 180) % 180 < 15f)
+            AddReward(0.002f);
+        else
+            AddReward(-0.001f);
     }
 
     /// <summary>
@@ -173,8 +135,8 @@ public class FSMAgent_chase : Agent
         else if (Input.GetKey(KeyCode.S)) forward = -transform.forward;
 
         // Left/right
-        if (Input.GetKey(KeyCode.A)) left = -transform.right;
-        else if (Input.GetKey(KeyCode.D)) left = transform.right;
+        //if (Input.GetKey(KeyCode.A)) left = -transform.right;
+        //else if (Input.GetKey(KeyCode.D)) left = transform.right;
 
         // Convert keyboard inputs to movement and turning
         // All values should be between -1 and +1
@@ -184,94 +146,23 @@ public class FSMAgent_chase : Agent
         else if (Input.GetKey(KeyCode.E)) rotation = 1f;
 
         // Combine the movement vectors and normalize
-        Vector3 combined = (forward + left).normalized; ;
+        Vector3 combined = (forward).normalized; ;
 
         // Apply movement
         ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
         continuousActions[0] = rotation;
-        continuousActions[1] = combined.x;
-        continuousActions[2] = combined.z;
-    }
-
-    /// <summary>
-    /// Try to respawn the agent on a different safe position
-    /// </summary>
-    public void Respawn()
-    {
-        this.gameObject.SetActive(true);
-        int attemptsReamining = 200;
-        Vector3 potentialPosition = new Vector3(UnityEngine.Random.Range(_fsmArea._teamAgentsBounds.min.x, _fsmArea._teamAgentsBounds.max.x),
-                                                1f,
-                                                UnityEngine.Random.Range(_fsmArea._teamAgentsBounds.min.z, _fsmArea._teamAgentsBounds.max.z));
-
-        // 1º Check for collision with walls, enemies or other agents
-        // 2º Check if the patrol area is within the boundaries (X axis)
-        // 3º Check if the patrol area is within the boundaries (Z axis)
-        while (Physics.CheckBox(potentialPosition, new Vector3(2f, 0.1f, 2f)) &&
-               Mathf.Abs(_fsmArea._teamAgentsBounds.extents.x - potentialPosition.x) > _patrollingArea &&
-               Mathf.Abs(_fsmArea._teamAgentsBounds.extents.z - potentialPosition.z) > _patrollingArea &&
-               attemptsReamining > 0)
-        {
-            attemptsReamining--;
-        }
-
-        _spawningPoint.position = potentialPosition;
-        this.transform.position = potentialPosition;
-    }
-
-    /// <summary>
-    /// Update the nearest enemy to the agent
-    /// </summary>
-    private void UpdateNearestEnemy()
-    {
-        //bool allEnemiesInactive = true;
-        foreach (FSMEnemy enemy in _fsmArea._enemies)
-        {
-            if (_nearestEnemy == null && enemy.isActiveAndEnabled)
-            {
-                _nearestEnemy = enemy;
-                //allEnemiesInactive = false;
-            }
-            else if (enemy.isActiveAndEnabled)
-            {
-                // Calculate distance to this enemy and to the current nearest enemy
-                float distanceToEnemy = Vector3.Distance(this.transform.position, enemy.transform.position);
-                float distanceToNearestEnemy = Vector3.Distance(this.transform.position, _nearestEnemy.transform.position);
-
-                // If nearest enemy isn't active, or enemy is closer, update the nearest enemy
-                if (!_nearestEnemy.isActiveAndEnabled || distanceToEnemy < distanceToNearestEnemy)
-                {
-                    _nearestEnemy = enemy;
-                    //allEnemiesInactive = true;
-                }
-            }
-        }
-
-        //if (allEnemiesInactive)
-        //_nearestEnemy = null;
+        //continuousActions[1] = combined.x;
+        continuousActions[1] = combined.z;
     }
 
     private void FixedUpdate()
     {
-        _animator.SetFloat("distanceToEnemy", Vector3.Distance(this.transform.position, _nearestEnemy.transform.position));
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Boundary" || other.gameObject.tag == "Enemy")
+        if (!_frozen)
         {
-            SetReward(-0.5f);
-            //this.gameObject.SetActive(false);
-            EndEpisode();
-        }
-    }
+            //Debug.Assert(_nearestEnemy != null, "Nearest enemy = NULL");
+            _animator.SetFloat("distanceToEnemy", Vector3.Distance(this.transform.position, _nearestEnemy.transform.position));
 
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.tag == "Wall")
-        {
-            Debug.Log("Collision on wall");
-            AddReward(-0.01f);
+            Debug.DrawLine(this.transform.position, _nearestEnemy.transform.position, Color.yellow);
         }
     }
 }

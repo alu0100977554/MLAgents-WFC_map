@@ -51,7 +51,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: distanceToEnemy
-    m_EventTreshold: 15
+    m_EventTreshold: 20
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 8524333303579202568}
   m_Solo: 0
@@ -172,7 +172,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 4
     m_ConditionEvent: distanceToEnemy
-    m_EventTreshold: 20
+    m_EventTreshold: 25
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7746221392571304156}
   m_Solo: 0
@@ -197,7 +197,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: distanceToEnemy
-    m_EventTreshold: 20
+    m_EventTreshold: 25
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -520433743245655503}
   m_Solo: 0
@@ -234,7 +234,7 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 3
     m_ConditionEvent: distanceToEnemy
-    m_EventTreshold: 15
+    m_EventTreshold: 20
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -7746221392571304156}
   m_Solo: 0

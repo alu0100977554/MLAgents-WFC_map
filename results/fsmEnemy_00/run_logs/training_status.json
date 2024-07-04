@@ -1,0 +1,51 @@
+{
+    "Shooter": {
+        "checkpoints": [
+            {
+                "steps": 0,
+                "file_path": "results\\fsmEnemy_00\\Shooter\\Shooter-0.onnx",
+                "reward": null,
+                "creation_time": 1718874826.262289,
+                "auxillary_file_paths": [
+                    "results\\fsmEnemy_00\\Shooter\\Shooter-0.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 0,
+            "file_path": "results\\fsmEnemy_00\\Shooter.onnx",
+            "reward": null,
+            "creation_time": 1718874826.262289,
+            "auxillary_file_paths": [
+                "results\\fsmEnemy_00\\Shooter\\Shooter-0.pt"
+            ]
+        }
+    },
+    "FSMEnemy": {
+        "checkpoints": [
+            {
+                "steps": 411055,
+                "file_path": "results\\fsmEnemy_00\\FSMEnemy\\FSMEnemy-411055.onnx",
+                "reward": -0.01964999996125698,
+                "creation_time": 1718874826.3223433,
+                "auxillary_file_paths": [
+                    "results\\fsmEnemy_00\\FSMEnemy\\FSMEnemy-411055.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 411055,
+            "file_path": "results\\fsmEnemy_00\\FSMEnemy.onnx",
+            "reward": -0.01964999996125698,
+            "creation_time": 1718874826.3223433,
+            "auxillary_file_paths": [
+                "results\\fsmEnemy_00\\FSMEnemy\\FSMEnemy-411055.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.2.2+cu121"
+    }
+}

@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
         //Debug.Log("Trigger enter with " + other.tag);
         // Check if it collides with an enemy
         // Substract agent's rewars if the shot fails
-        if (other.tag == "Enemy")
+        if (other.tag == "FSMEnemy")
         {
             _shooterAgent.AddScore(other);
         }
