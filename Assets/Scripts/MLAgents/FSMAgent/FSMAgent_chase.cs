@@ -100,7 +100,7 @@ public class FSMAgent_chase : FSMAgent
         this.transform.position += _passiveMovementSpeed * AgentForwardVector + movement * Time.deltaTime * _moveForce;
 
         Vector3 toNearestEnemy = _nearestEnemy.transform.position - this.transform.position;
-        if (toNearestEnemy.magnitude > 10f)
+        if (toNearestEnemy.magnitude > 15f && toNearestEnemy.magnitude < 25f)
         {
             AddReward(0.003f);
         }
@@ -109,10 +109,13 @@ public class FSMAgent_chase : FSMAgent
             AddReward(-0.001f);
         }
 
-        if ((Vector3.Angle(AgentForwardVector, toNearestEnemy) + 180) % 180 < 15f)
+        if ((Vector3.Angle(AgentForwardVector, toNearestEnemy) + 180) % 180 < 5f)
             AddReward(0.002f);
         else
             AddReward(-0.001f);
+
+        _fsmArea.EpisodeStep();
+        
     }
 
     /// <summary>

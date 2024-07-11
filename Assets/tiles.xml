@@ -2,14 +2,25 @@
   <tiles>
 <tile name="prefabs/Floor" symmetry="X" weight="1.0"/>
 <tile name="prefabs/Wall" symmetry="X" weight="1.0"/>
+<tile name="prefabs/Grass" symmetry="X" weight="1.0"/>
 	</tiles>
-<neighbors>  <neighbor left="prefabs/Wall 0" right="prefabs/Wall 0"/>
-  <neighbor left="prefabs/Wall 1" right="prefabs/Floor 1"/>
-  <neighbor left="prefabs/Wall 1" right="prefabs/Wall 1"/>
-  <neighbor left="prefabs/Wall 0" right="prefabs/Floor 0"/>
-  <neighbor left="prefabs/Floor 0" right="prefabs/Floor 0"/>
-  <neighbor left="prefabs/Floor 1" right="prefabs/Wall 1"/>
+<neighbors>  <neighbor left="prefabs/Floor 0" right="prefabs/Floor 0"/>
   <neighbor left="prefabs/Floor 1" right="prefabs/Floor 1"/>
   <neighbor left="prefabs/Floor 0" right="prefabs/Wall 0"/>
+  <neighbor left="prefabs/Floor 1" right="prefabs/Wall 1"/>
+  <neighbor left="prefabs/Wall 0" right="prefabs/Wall 0"/>
+  <neighbor left="prefabs/Wall 1" right="prefabs/Wall 1"/>
+  <neighbor left="prefabs/Wall 0" right="prefabs/Floor 0"/>
+  <neighbor left="prefabs/Floor 0" right="prefabs/Grass 0"/>
+  <neighbor left="prefabs/Grass 0" right="prefabs/Grass 0"/>
+  <neighbor left="prefabs/Grass 1" right="prefabs/Grass 1"/>
+  <neighbor left="prefabs/Grass 0" right="prefabs/Wall 0"/>
+  <neighbor left="prefabs/Grass 1" right="prefabs/Wall 1"/>
+  <neighbor left="prefabs/Floor 1" right="prefabs/Grass 1"/>
+  <neighbor left="prefabs/Grass 1" right="prefabs/Floor 1"/>
+  <neighbor left="prefabs/Wall 1" right="prefabs/Grass 1"/>
+  <neighbor left="prefabs/Wall 1" right="prefabs/Floor 1"/>
+  <neighbor left="prefabs/Wall 0" right="prefabs/Grass 0"/>
+  <neighbor left="prefabs/Grass 0" right="prefabs/Floor 0"/>
 	</neighbors>
 </set>

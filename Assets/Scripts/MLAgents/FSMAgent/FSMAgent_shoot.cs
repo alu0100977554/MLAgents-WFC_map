@@ -28,7 +28,7 @@ public class FSMAgent_shoot : FSMAgent
     private int _currentStepsBetweenShots = 0;
 
     [Tooltip("Max shooting range")]
-    public float _maxShootingRange = 5.0f;
+    public float _maxShootingRange = 15.0f;
 
     // Shooting point (gun)
     public Transform _shootingPoint;
@@ -143,7 +143,7 @@ public class FSMAgent_shoot : FSMAgent
         this.transform.position += _passiveMovementSpeed * AgentForwardVector + movement * Time.deltaTime * _moveForce;
 
         Vector3 toNearestEnemy = _nearestEnemy.transform.position - this.transform.position;
-        if (toNearestEnemy.magnitude <= 10f)
+        if (toNearestEnemy.magnitude <= 15f)
         {
             AddReward(0.003f);
         }
@@ -152,7 +152,7 @@ public class FSMAgent_shoot : FSMAgent
             AddReward(-0.001f);
         }
 
-        if ((Vector3.Angle(AgentForwardVector, toNearestEnemy) + 180) % 180 < 15f)
+        if ((Vector3.Angle(AgentForwardVector, toNearestEnemy) + 180) % 180 < 7.5f)
             AddReward(0.002f);
         else
             AddReward(-0.001f);
@@ -160,6 +160,8 @@ public class FSMAgent_shoot : FSMAgent
         // Try to shoot at nearest enemy
         if (actions.DiscreteActions[0] == 1 && _availableShot == true)
             Shoot();
+
+        _fsmArea.EpisodeStep();
     }
 
     /// <summary>
@@ -217,7 +219,7 @@ public class FSMAgent_shoot : FSMAgent
         AddReward(0.1f);
 
         // Increment agent's score
-        //_scoreManager._score++;
+        _score++;
 
         CheckRemainingEnemies();
     }

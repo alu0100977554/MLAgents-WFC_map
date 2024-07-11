@@ -369,7 +369,7 @@ public class FSMEnemy : Agent
     {
         if (other.gameObject.tag == "Wall")
         {
-            Debug.Log("Collision on wall");
+            //Debug.Log("Collision on wall");
             AddReward(-0.01f);
         }
 

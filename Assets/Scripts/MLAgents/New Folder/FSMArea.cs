@@ -35,6 +35,11 @@ public class FSMArea : MonoBehaviour
     public List<GameObject> _targets;
 
     [SerializeField]
+    private OverlapWFC _overlap;
+
+    private int _episodeLength;
+
+    [SerializeField]
     private GameObject _area;
 
     public Bounds _areaBounds;
@@ -46,17 +51,31 @@ public class FSMArea : MonoBehaviour
     /// </summary>
     public void ResetScene()
     {
+        /*if (_overlap.transform.GetChild(1).GetChild(0).childCount <= 0)
+        {
+            _overlap.Generate();
+        }*/
+        _episodeLength = 0;
+
         foreach (FSMAgent agent in _agents)
         {
             agent.Respawn();
         }
-        _agents[1].Freeze();
-        _agents[2].Freeze();
+        //_agents[1].Freeze();
+        //_agents[2].Freeze();
         foreach (FSMEnemy enemy in _enemies)
         {
             enemy.Respawn();
         }
         ResetTargets();
+    }
+
+    /// <summary>
+    /// Increments _episode length
+    /// </summary>
+    public void EpisodeStep()
+    {
+        _episodeLength++;
     }
 
     /// <summary>
@@ -69,6 +88,11 @@ public class FSMArea : MonoBehaviour
         _teamAgentsBounds = _area.transform.GetChild(0).GetComponent<Renderer>().bounds;
         _teamEnemiesBounds = _area.transform.GetChild(1).GetComponent<Renderer>().bounds;
 
+        //_overlap = this.transform.GetChild(3).GetComponent<OverlapWFC>();
+
+        //_player = Instantiate(_playerPrefab, this.transform.position, Quaternion.identity, this.transform.GetChild(0));
+        //_agents.Add(_player.GetComponent<FSMAgent>());
+
         // Instantiate _maxAgents agents as childs of Agents
         for (int i = 0; i < _maxAgents; i++)
         {
@@ -76,6 +100,7 @@ public class FSMArea : MonoBehaviour
             GameObject newPatrolAgent = Instantiate(_agentPrefabs[0], this.transform.position, Quaternion.identity, this.transform.GetChild(0));
             _agents.Add(newPatrolAgent.GetComponent<FSMAgent>());
             _prefabIndex = 0;
+            //newPatrolAgent.GetComponent<FSMAgent_patrol>().Freeze();
 
             GameObject newChaseAgent = Instantiate(_agentPrefabs[1], this.transform.position, Quaternion.identity, this.transform.GetChild(0));
             _agents.Add(newChaseAgent.GetComponent<FSMAgent>());

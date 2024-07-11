@@ -357,6 +357,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3793645337937174103, guid: 9c783b4937459084ebaee92c9ecc36e9, type: 3}
+      propertyPath: _maxEnemies
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3793645337937174103, guid: 9c783b4937459084ebaee92c9ecc36e9, type: 3}
+      propertyPath: _targetPrefab
+      value: 
+      objectReference: {fileID: 7065250639305205198, guid: 04be464330a9bb345a326ddeb97e5f75, type: 3}
     - target: {fileID: 7921479414507131199, guid: 9c783b4937459084ebaee92c9ecc36e9, type: 3}
       propertyPath: m_Name
       value: FSMArea

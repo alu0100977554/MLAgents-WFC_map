@@ -1213,6 +1213,37 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 2
+--- !u!1 &2457128897358337360
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6048073537560833365}
+  m_Layer: 0
+  m_Name: Targets
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6048073537560833365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2457128897358337360}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 55.618706, y: -21.915443, z: 35.138275}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1027095516387697793}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3285131676753175894
 GameObject:
   m_ObjectHideFlags: 0
@@ -2782,6 +2813,7 @@ Transform:
   m_Children:
   - {fileID: 3302443743966315031}
   - {fileID: 3217404959867480378}
+  - {fileID: 6048073537560833365}
   - {fileID: 7559625886819019119}
   - {fileID: 516746557510008456}
   m_Father: {fileID: 0}
@@ -2803,13 +2835,19 @@ MonoBehaviour:
   - {fileID: 6493858192870339029, guid: bd1533582f6e7c040806b56b426a1897, type: 3}
   - {fileID: 6493858192870339029, guid: 76870898e9d996b47ad752ff5eb9c729, type: 3}
   _prefabIndex: 0
-  _enemyPrefab: {fileID: 7065250639305205198, guid: dbfdd5487c0f6f04d8eb6d8bd5392e17, type: 3}
   _maxAgents: 1
   _agents: []
+  _enemyPrefab: {fileID: 7065250639305205198, guid: dbfdd5487c0f6f04d8eb6d8bd5392e17, type: 3}
   _maxEnemies: 1
   _enemies: []
-  _activeEnemies: 0
+  _targetPrefab: {fileID: 0}
+  _maxTargets: 5
+  _targets: []
+  _overlap: {fileID: 0}
   _area: {fileID: 5070809565326552560}
+  _areaBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
   _teamAgentsBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}

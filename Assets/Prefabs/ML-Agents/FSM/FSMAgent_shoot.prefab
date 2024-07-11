@@ -116,7 +116,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 862211947608301140}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -277,7 +277,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5595365688123340144
 RectTransform:
   m_ObjectHideFlags: 0
@@ -549,7 +549,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 859804b6bc72a5b429c55a7b80d84cd4, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: 67dd536bbc10bf94b8dbc511356f9935, type: 3}
   m_InferenceDevice: 0
   m_BehaviorType: 2
   m_BehaviorName: fsmAgent_shoot
@@ -654,11 +654,14 @@ MonoBehaviour:
   _moveForce: 1.5
   _passiveMovementSpeed: 0.05
   _rotationSpeed: 75
+  _spawningPoint: {x: 0, y: 0, z: 0}
   _detectionRadius: 20
   _nearestEnemyInRange: 0
   agentCamera: {fileID: 1596723642815277022}
   _trainingMode: 0
   _fsmArea: {fileID: 0}
+  _frozen: 0
+  _scoreManager: {fileID: 0}
   _isInPatrollingArea: 0
   _availableShot: 0
   _shotDamage: 1

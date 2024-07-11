@@ -39,7 +39,7 @@ public class FSMAgent_patrol : FSMAgent
         sensor.AddObservation(this.transform.localRotation.normalized);
 
         // Get a vector from the agent to the nearest enemy
-        Vector3 toPatrollingAreaCentre =_spawningPoint.transform.position - this.transform.position;
+        Vector3 toPatrollingAreaCentre =_spawningPoint - this.transform.position;
 
         // Observe the normalized vector to the centre of the patrolling area (3 observations)
         sensor.AddObservation(toPatrollingAreaCentre.normalized);
@@ -100,12 +100,14 @@ public class FSMAgent_patrol : FSMAgent
 
         if (_isInPatrollingArea)
         {
-            AddReward(0.01f);
+            AddReward(0.001f);
         }
         else
         {
-            AddReward(-0.005f);
+            AddReward(-0.0005f);
         }
+
+        _fsmArea.EpisodeStep();
     }
 
     /// <summary>
@@ -157,15 +159,15 @@ public class FSMAgent_patrol : FSMAgent
 
             Debug.DrawLine(this.transform.position, _nearestEnemy.transform.position, Color.blue);
 
-            if (Vector3.Distance(this.transform.position, _spawningPoint.position) < _patrollingArea)
+            if (Mathf.Abs(Vector3.Distance(this.transform.position, _spawningPoint)) < _patrollingArea)
             {
                 _isInPatrollingArea = true;
-                Debug.DrawLine(this.transform.position, _spawningPoint.transform.position, Color.green);
+                Debug.DrawLine(this.transform.position, _spawningPoint, Color.green);
             }
             else
             {
                 _isInPatrollingArea = false;
-                Debug.DrawLine(this.transform.position, _spawningPoint.transform.position, Color.white);
+                Debug.DrawLine(this.transform.position, _spawningPoint, Color.white);
             }
         }
     }

@@ -23,7 +23,8 @@ public class FSMAgent : Agent
     public float _rotationSpeed = 75f;
 
     // Spawning point
-    protected Transform _spawningPoint;
+    [SerializeField]
+    protected Vector3 _spawningPoint;
 
     // The area around spawning point the agent is patrolling
     protected float _patrollingArea = 15f;
@@ -56,7 +57,13 @@ public class FSMAgent : Agent
     protected float _smoothRotationChange = 0f;
 
     // If the agent is frozen or not
+    [SerializeField]
     protected bool _frozen = false;
+
+    [SerializeField]
+    //protected ScoreManager _scoreManager;
+
+    protected int _score;
 
     /// <summary>
     /// A vector pointing straight forward out of the agent
@@ -77,7 +84,7 @@ public class FSMAgent : Agent
         _animator = GetComponentInParent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         _fsmArea = GetComponentInParent<FSMArea>();
-        _spawningPoint = this.transform;
+        //_spawningPoint = this.transform;
 
         // If the playing is controlling the agent, max step is set to infinite
         if (!_trainingMode) MaxStep = 0;
@@ -90,7 +97,7 @@ public class FSMAgent : Agent
     {
         _fsmArea.ResetScene();
         UpdateNearestEnemy();
-        Debug.Log("New episode");
+        _score = 0;
     }
 
     /// <summary>
@@ -98,10 +105,15 @@ public class FSMAgent : Agent
     /// </summary>
     public void Respawn()
     {
+        float y = 1.6f;
+        if (_frozen)
+        {
+            y = -5f;
+        }
         //this.gameObject.SetActive(true);
         int attemptsReamining = 200;
         Vector3 potentialPosition = new Vector3(UnityEngine.Random.Range(_fsmArea._teamAgentsBounds.min.x, _fsmArea._teamAgentsBounds.max.x),
-                                                1.6f,
+                                                y,
                                                 UnityEngine.Random.Range(_fsmArea._teamAgentsBounds.min.z, _fsmArea._teamAgentsBounds.max.z));
 
         // 1º Check for collision with walls, enemies or other agents
@@ -115,8 +127,9 @@ public class FSMAgent : Agent
             attemptsReamining--;
         }
 
-        _spawningPoint.position = potentialPosition;
+        _spawningPoint = potentialPosition;
         this.transform.position = potentialPosition;
+        //_frozen = false;
     }
 
     /// <summary>
@@ -124,7 +137,7 @@ public class FSMAgent : Agent
     /// </summary>
     public void Freeze()
     {
-        this.transform.position = Vector3.zero;
+        this.transform.position = new Vector3(1000f, 1000f, 1000f);
         this.transform.rotation = Quaternion.identity;
         this._rigidbody.angularVelocity = Vector3.zero;
         //this.gameObject.SetActive(false);
@@ -191,7 +204,7 @@ public class FSMAgent : Agent
     {
         if (other.gameObject.tag == "Wall")
         {
-            Debug.Log("Collision on wall");
+            //Debug.Log("Collision on wall");
             AddReward(-0.01f);
         }
     }
