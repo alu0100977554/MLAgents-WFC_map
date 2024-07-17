@@ -116,7 +116,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 862211947608301140}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -649,7 +649,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 5000
+  MaxStep: 7500
   _animator: {fileID: 0}
   _moveForce: 1.5
   _passiveMovementSpeed: 0.05
@@ -658,9 +658,10 @@ MonoBehaviour:
   _detectionRadius: 10
   _nearestEnemyInRange: 0
   agentCamera: {fileID: 1596723642815277022}
-  _trainingMode: 0
+  _trainingMode: 1
   _fsmArea: {fileID: 0}
   _frozen: 0
+  _score: 0
   _isInPatrollingArea: 0
 --- !u!114 &6607072616188615120
 MonoBehaviour:

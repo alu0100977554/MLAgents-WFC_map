@@ -107,7 +107,7 @@ public class FSMAgent_patrol : FSMAgent
             AddReward(-0.0005f);
         }
 
-        _fsmArea.EpisodeStep();
+        _fsmArea._episodeLength++;
     }
 
     /// <summary>

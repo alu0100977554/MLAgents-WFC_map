@@ -336,19 +336,21 @@ public class FSMEnemy : Agent
         {
             SetReward(-0.01f);
             //this.gameObject.SetActive(false);
-            EndEpisode();
+            this.gameObject.SetActive(false);
+            //EndEpisode();
         }
 
         if (other.gameObject.tag == "FSMAgent")
         {
-            Debug.Log("Trigger with agent");
+            //Debug.Log("Trigger with agent");
             AddReward(-0.01f);
-            EndEpisode();
+            this.gameObject.SetActive(false);
+            //EndEpisode();
         }
 
         if (other.gameObject.tag == "Target")
         {
-            Debug.Log("Trigger with target");
+            //Debug.Log("Trigger with target");
             SetReward(0.1f);
             other.gameObject.SetActive(false);
             UpdateNearestTarget();
@@ -375,9 +377,10 @@ public class FSMEnemy : Agent
 
         if (other.gameObject.tag == "FSMAgent")
         {
-            Debug.Log("Collision with agent");
+            //Debug.Log("Collision with agent");
             AddReward(-0.01f);
-            EndEpisode();
+            this.gameObject.SetActive(false);
+            //EndEpisode();
         }
     }
 }

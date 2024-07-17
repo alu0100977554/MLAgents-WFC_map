@@ -17,7 +17,7 @@ public class LoadTiledMap : MonoBehaviour
     public void LoadData()
     {
         TextAsset jsonContent = Resources.Load<TextAsset>("tiles/" + _modelMap.GetComponent<OverlapWFC>().GetInstanceID());
-        Debug.Log("Loading from: D:/Documentos/Github/Repos/MLAgents-WFC_map/Assets/Resources/tiles/" + _modelMap.GetComponent<OverlapWFC>().GetInstanceID() + ".json");
+        Debug.Log("Loading from: D:/Programas/Unity/Repos/MLAgents-WFC_map/Assets/Resources/tiles/" + _modelMap.GetComponent<OverlapWFC>().GetInstanceID() + ".json");
 
         // Convert the information of the JSON file into an object
         LoadTiledMap modelMapInfo = JSONHelper.FromJson(jsonContent.text);

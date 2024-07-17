@@ -21,8 +21,8 @@ public class SaveTiledMap : MonoBehaviour
 
         // Convert the information to string into a JSON file
         string jsonData = JSONHelper.ToJson(this);
-        Debug.Log("Saving in: D:/Documentos/Github/Repos/MLAgents-WFC_map/Assets/Resources/tiles/" + GetComponent<OverlapWFC>().GetInstanceID() + ".json");
-        System.IO.File.WriteAllText("D:/Documentos/Github/Repos/MLAgents-WFC_map/Assets/Resources/tiles/" + GetComponent<OverlapWFC>().GetInstanceID() + ".json", jsonData);
+        Debug.Log("Saving in: D:/Programas/Unity/Repos/MLAgents-WFC_map/Assets/Resources/tiles/" + GetComponent<OverlapWFC>().GetInstanceID() + ".json");
+        System.IO.File.WriteAllText("D:/Programas/Unity/Repos/MLAgents-WFC_map/Assets/Resources/tiles/" + GetComponent<OverlapWFC>().GetInstanceID() + ".json", jsonData);
     }
 
     private void ReadMap()

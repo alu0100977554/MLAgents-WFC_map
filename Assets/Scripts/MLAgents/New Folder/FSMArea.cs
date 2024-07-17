@@ -37,7 +37,7 @@ public class FSMArea : MonoBehaviour
     [SerializeField]
     private OverlapWFC _overlap;
 
-    private int _episodeLength;
+    public int _episodeLength;
 
     [SerializeField]
     private GameObject _area;
@@ -68,14 +68,6 @@ public class FSMArea : MonoBehaviour
             enemy.Respawn();
         }
         ResetTargets();
-    }
-
-    /// <summary>
-    /// Increments _episode length
-    /// </summary>
-    public void EpisodeStep()
-    {
-        _episodeLength++;
     }
 
     /// <summary>

@@ -38,6 +38,18 @@ public class JSONHelper : MonoBehaviour
         }
     }
 
+    public class GameDataWrapper
+    {
+        public int _score;
+        public int _episodeLength;
+
+        public GameDataWrapper(int score, int episodeLength)
+        {
+            _score = score;
+            _episodeLength = episodeLength;
+        }
+    }
+
     public static string ToJson(SaveTiledMap savedData)
     {
         Wrapper wrapper = new Wrapper(savedData);
@@ -65,5 +77,12 @@ public class JSONHelper : MonoBehaviour
         }
 
         return loadedData;
+    }
+
+    public static string GameDataToJson(int score, int episodeLength)
+    {
+        GameDataWrapper gameDataWrapper = new GameDataWrapper(score, episodeLength);
+        Debug.Log("score = " + gameDataWrapper._score + ", after json");
+        return JsonUtility.ToJson(gameDataWrapper);
     }
 }

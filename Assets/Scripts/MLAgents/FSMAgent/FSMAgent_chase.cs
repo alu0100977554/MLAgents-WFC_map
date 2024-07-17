@@ -114,8 +114,8 @@ public class FSMAgent_chase : FSMAgent
         else
             AddReward(-0.001f);
 
-        _fsmArea.EpisodeStep();
-        
+        _fsmArea._episodeLength++;
+
     }
 
     /// <summary>

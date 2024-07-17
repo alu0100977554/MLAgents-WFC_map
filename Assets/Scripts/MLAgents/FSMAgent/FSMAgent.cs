@@ -95,6 +95,8 @@ public class FSMAgent : Agent
     /// </summary>
     public override void OnEpisodeBegin()
     {
+        string gameData = JSONHelper.GameDataToJson(_score, _fsmArea._episodeLength);
+        System.IO.File.WriteAllText("D:/Programas/Unity/Repos/MLAgents-WFC_map/Assets/Resources/gamedata/" + GetComponent<FSMAgent>().GetInstanceID() + ".json", gameData);
         _fsmArea.ResetScene();
         UpdateNearestEnemy();
         _score = 0;
@@ -195,7 +197,8 @@ public class FSMAgent : Agent
         {
             SetReward(-0.5f);
             //this.gameObject.SetActive(false);
-            Debug.Log("Trigger on boundary");
+            //Debug.Log("Trigger on boundary");
+            Debug.Log("score = " + _score + ", before json");
             EndEpisode();
         }
     }

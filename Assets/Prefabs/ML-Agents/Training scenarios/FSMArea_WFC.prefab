@@ -192634,17 +192634,17 @@ MonoBehaviour:
   - {fileID: 6493858192870339029, guid: fc94c99467a3e78478940c9377c718eb, type: 3}
   - {fileID: 6493858192870339029, guid: bd1533582f6e7c040806b56b426a1897, type: 3}
   - {fileID: 6493858192870339029, guid: 76870898e9d996b47ad752ff5eb9c729, type: 3}
-  _playerPrefab: {fileID: 6493858192870339029, guid: d379f00094bd77347b9d68d7d8c825c5, type: 3}
   _prefabIndex: 0
   _maxAgents: 1
   _agents: []
   _enemyPrefab: {fileID: 7065250639305205198, guid: dbfdd5487c0f6f04d8eb6d8bd5392e17, type: 3}
-  _maxEnemies: 1
+  _maxEnemies: 10
   _enemies: []
   _targetPrefab: {fileID: 7065250639305205198, guid: 04be464330a9bb345a326ddeb97e5f75, type: 3}
   _maxTargets: 15
   _targets: []
   _overlap: {fileID: 0}
+  _episodeLength: 0
   _area: {fileID: 9009379190109757087}
   _areaBounds:
     m_Center: {x: 0, y: 0, z: 0}

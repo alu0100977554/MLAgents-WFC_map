@@ -161,7 +161,7 @@ public class FSMAgent_shoot : FSMAgent
         if (actions.DiscreteActions[0] == 1 && _availableShot == true)
             Shoot();
 
-        _fsmArea.EpisodeStep();
+        _fsmArea._episodeLength++;
     }
 
     /// <summary>
@@ -214,6 +214,7 @@ public class FSMAgent_shoot : FSMAgent
     /// <param name="other">The object wich the bullet collides with</param>
     public void AddScore(Collider other)
     {
+        Debug.Log("Adding score");
         // Call GetShot() function from Enemy and get a reward
         other.transform.GetComponent<FSMEnemy>().GetShot(_shotDamage);
         AddReward(0.1f);
@@ -244,7 +245,9 @@ public class FSMAgent_shoot : FSMAgent
 
         // End episode if there is no enemies active
         if (!activeEnemies)
+        {
             EndEpisode();
+        }
     }
 
     /// <summary>

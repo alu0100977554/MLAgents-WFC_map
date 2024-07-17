@@ -14,7 +14,7 @@ public class FSMBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Trigger enter with " + other.tag);
+        Debug.Log(other.tag + " has been shot");
         // Check if it collides with an enemy
         // Substract agent's rewars if the shot fails
         if (other.tag == "Enemy")

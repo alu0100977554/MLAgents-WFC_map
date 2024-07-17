@@ -649,7 +649,7 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 5000
+  MaxStep: 7500
   _animator: {fileID: 0}
   _moveForce: 1.5
   _passiveMovementSpeed: 0.05
@@ -658,10 +658,10 @@ MonoBehaviour:
   _detectionRadius: 20
   _nearestEnemyInRange: 0
   agentCamera: {fileID: 1596723642815277022}
-  _trainingMode: 0
+  _trainingMode: 1
   _fsmArea: {fileID: 0}
   _frozen: 0
-  _scoreManager: {fileID: 0}
+  _score: 0
   _isInPatrollingArea: 0
   _availableShot: 0
   _shotDamage: 1
